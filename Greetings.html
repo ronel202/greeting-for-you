@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Surprise Gift with Video</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -14,6 +18,7 @@
       align-items: center;
       height: 100vh;
       font-family: sans-serif;
+      overflow: hidden;
     }
 
     .gift-container {
@@ -21,6 +26,7 @@
       width: 200px;
       height: 200px;
       cursor: pointer;
+      z-index: 2;
     }
 
     .box {
@@ -65,45 +71,46 @@
     }
 
     .video-container {
-      position: absolute;
-      top: 230px;
-      left: 50%;
-      transform: translateX(-50%);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
       opacity: 0;
-      transition: opacity 1s;
-      width: 300px;
-      height: 180px; /* adjusted height */
-      max-width: 90vw;
+      pointer-events: none;
+      transition: opacity 0.5s;
+      z-index: 1;
     }
 
-    .gift-container.open .video-container {
+    .gift-container.open ~ .video-container {
       opacity: 1;
+      pointer-events: auto;
     }
 
     video {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
 
     .sound-toggle {
       position: absolute;
-      bottom: 10px;
-      right: 10px;
+      bottom: 20px;
+      right: 20px;
       background: rgba(255, 255, 255, 0.7);
       border: none;
       border-radius: 50%;
-      width: 35px;
-      height: 35px;
+      width: 40px;
+      height: 40px;
       font-size: 18px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
       transition: background 0.3s;
+      z-index: 10;
     }
 
     .sound-toggle:hover {
@@ -117,16 +124,17 @@
   <div class="lid"></div>
   <div class="box"></div>
   <div class="ribbon"></div>
-  <div class="video-container">
-    <video id="giftVideo" muted autoplay>
-      <source src="hbd.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    <button class="sound-toggle" id="soundBtn" onclick="toggleMute(event)">🔇</button>
-  </div>
 </div>
 
-<!-- Background music -->
+<div class="video-container">
+  <video id="giftVideo" muted autoplay>
+    <source src="hbd.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <button class="sound-toggle" id="soundBtn" onclick="toggleMute(event)">🔇</button>
+</div>
+
+<!-- Background Music -->
 <audio id="bgMusic" autoplay loop>
   <source src="bgm.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
@@ -138,16 +146,12 @@
     const video = document.getElementById('giftVideo');
     const bgMusic = document.getElementById('bgMusic');
 
-    // Toggle open state
     gift.classList.toggle('open');
 
     if (gift.classList.contains('open')) {
       video.play();
-      if (!bgMusic.paused) {
-        bgMusic.pause();
-      }
+      bgMusic.pause();
 
-      // Poem alert
       alert(
         "🎉 Happy Birthday, Lei! 🎉\n\n" +
         "Roses are red, skies are blue,\n" +
@@ -159,11 +163,12 @@
     } else {
       video.pause();
       video.currentTime = 0;
+      bgMusic.play();
     }
   }
 
   function toggleMute(e) {
-    e.stopPropagation(); // prevent reopening/closing gift
+    e.stopPropagation();
     const video = document.getElementById('giftVideo');
     const btn = document.getElementById('soundBtn');
 
