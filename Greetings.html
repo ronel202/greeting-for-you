@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Surprise Gift with Toggle Sound</title>
+  <title>Surprise Gift with Poem Alert</title>
   <style>
     body {
       margin: 0;
@@ -66,15 +66,14 @@
 
     .video-container {
       position: absolute;
-      top: 220px;
+      top: 230px;
       left: 50%;
       transform: translateX(-50%);
       opacity: 0;
-      transition: opacity 0.8s;
+      transition: opacity 1s;
       width: 300px;
       max-width: 90vw;
-      max-height: 170px;
-      overflow: hidden;
+      max-height: 250px;
     }
 
     .gift-container.open .video-container {
@@ -83,10 +82,10 @@
 
     video {
       width: 100%;
-      height: 170px;
+      height: auto;
+      max-height: 250px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      object-fit: cover;
     }
 
     .sound-toggle {
@@ -119,7 +118,7 @@
   <div class="box"></div>
   <div class="ribbon"></div>
   <div class="video-container">
-    <video id="giftVideo" muted autoplay loop>
+    <video id="giftVideo" muted autoplay>
       <source src="hbd.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -128,25 +127,33 @@
 </div>
 
 <script>
-  let isOpen = false;
-
   function toggleGift() {
     const gift = document.querySelector('.gift-container');
     const video = document.getElementById('giftVideo');
 
-    if (!isOpen) {
-      gift.classList.add('open');
+    // Toggle open/close class
+    gift.classList.toggle('open');
+
+    if (gift.classList.contains('open')) {
       video.play();
-      isOpen = true;
     } else {
-      gift.classList.remove('open');
       video.pause();
-      isOpen = false;
+      video.currentTime = 0;
     }
+
+    // Show birthday poem alert
+    alert(
+      "🎉 Happy Birthday, Lei! 🎉\n\n" +
+      "Roses are red, skies are blue,\n" +
+      "Today’s your day, we celebrate you!\n" +
+      "May your heart be light, your smile shine bright,\n" +
+      "With love and laughter from morning till night.\n\n" +
+      "From: Ronel 💖"
+    );
   }
 
   function toggleMute(e) {
-    e.stopPropagation(); // don't trigger gift toggle
+    e.stopPropagation(); // Prevent re-triggering gift open
     const video = document.getElementById('giftVideo');
     const btn = document.getElementById('soundBtn');
 
