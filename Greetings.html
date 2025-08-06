@@ -66,13 +66,15 @@
 
     .video-container {
       position: absolute;
-      top: 230px;
+      top: 220px;
       left: 50%;
       transform: translateX(-50%);
       opacity: 0;
-      transition: opacity 1s;
+      transition: opacity 0.8s;
       width: 300px;
       max-width: 90vw;
+      max-height: 170px;
+      overflow: hidden;
     }
 
     .gift-container.open .video-container {
@@ -81,8 +83,10 @@
 
     video {
       width: 100%;
+      height: 170px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      object-fit: cover;
     }
 
     .sound-toggle {
@@ -110,12 +114,12 @@
 </head>
 <body>
 
-<div class="gift-container" onclick="openGift()">
+<div class="gift-container" onclick="toggleGift()">
   <div class="lid"></div>
   <div class="box"></div>
   <div class="ribbon"></div>
   <div class="video-container">
-    <video id="giftVideo" muted autoplay>
+    <video id="giftVideo" muted autoplay loop>
       <source src="hbd.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -124,16 +128,25 @@
 </div>
 
 <script>
-  function openGift() {
+  let isOpen = false;
+
+  function toggleGift() {
     const gift = document.querySelector('.gift-container');
     const video = document.getElementById('giftVideo');
 
-    gift.classList.add('open');
-    video.play(); // auto-play
+    if (!isOpen) {
+      gift.classList.add('open');
+      video.play();
+      isOpen = true;
+    } else {
+      gift.classList.remove('open');
+      video.pause();
+      isOpen = false;
+    }
   }
 
   function toggleMute(e) {
-    e.stopPropagation(); // prevent re-triggering gift open
+    e.stopPropagation(); // don't trigger gift toggle
     const video = document.getElementById('giftVideo');
     const btn = document.getElementById('soundBtn');
 
