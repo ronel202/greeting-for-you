@@ -13,16 +13,15 @@
       margin: 0;
       padding: 0;
       background: #f8e7e7;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       font-family: sans-serif;
       overflow: hidden;
     }
 
     .gift-container {
-      position: relative;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       width: 200px;
       height: 200px;
       cursor: pointer;
@@ -70,22 +69,21 @@
       transform: translateY(50px);
     }
 
-    .video-container {
+    .video-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       background: black;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s;
-      z-index: 1;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 3;
     }
 
-    .gift-container.open ~ .video-container {
-      opacity: 1;
-      pointer-events: auto;
+    .video-screen.show {
+      display: flex;
     }
 
     video {
@@ -96,21 +94,19 @@
 
     .sound-toggle {
       position: absolute;
-      bottom: 20px;
+      top: 20px;
       right: 20px;
       background: rgba(255, 255, 255, 0.7);
       border: none;
       border-radius: 50%;
       width: 40px;
       height: 40px;
-      font-size: 18px;
+      font-size: 20px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 5px rgba(0,0,0,0.3);
-      transition: background 0.3s;
-      z-index: 10;
+      z-index: 4;
     }
 
     .sound-toggle:hover {
@@ -120,14 +116,16 @@
 </head>
 <body>
 
+<!-- Gift -->
 <div class="gift-container" onclick="toggleGift()">
   <div class="lid"></div>
   <div class="box"></div>
   <div class="ribbon"></div>
 </div>
 
-<div class="video-container">
-  <video id="giftVideo" muted autoplay>
+<!-- Video fullscreen -->
+<div class="video-screen" id="videoScreen">
+  <video id="giftVideo" autoplay muted>
     <source src="hbd.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
@@ -141,39 +139,41 @@
 </audio>
 
 <script>
+  const gift = document.querySelector('.gift-container');
+  const video = document.getElementById('giftVideo');
+  const bgMusic = document.getElementById('bgMusic');
+  const soundBtn = document.getElementById('soundBtn');
+  const videoScreen = document.getElementById('videoScreen');
+
   function toggleGift() {
-    const gift = document.querySelector('.gift-container');
-    const video = document.getElementById('giftVideo');
-    const bgMusic = document.getElementById('bgMusic');
+    gift.classList.add('open');
+    videoScreen.classList.add('show');
 
-    gift.classList.toggle('open');
+    // Unmute and play video
+    video.muted = false;
+    video.currentTime = 0;
+    video.play().catch(err => console.log("Play error:", err));
 
-    if (gift.classList.contains('open')) {
-      video.play();
+    // Pause background music
+    if (!bgMusic.paused) {
       bgMusic.pause();
-
-      alert(
-        "🎉 Happy Birthday, Lei! 🎉\n\n" +
-        "Roses are red, skies are blue,\n" +
-        "Today’s your day, we celebrate you!\n" +
-        "May your heart be light, your smile shine bright,\n" +
-        "With love and laughter from morning till night.\n\n" +
-        "From: Ronel 💖"
-      );
-    } else {
-      video.pause();
-      video.currentTime = 0;
-      bgMusic.play();
     }
+
+    // Show greeting
+    alert(
+      "🎉 Happy Birthday, Lei! 🎉\n\n" +
+      "Roses are red, skies are blue,\n" +
+      "Today’s your day, we celebrate you!\n" +
+      "May your heart be light, your smile shine bright,\n" +
+      "With love and laughter from morning till night.\n\n" +
+      "From: Ronel 💖"
+    );
   }
 
   function toggleMute(e) {
-    e.stopPropagation();
-    const video = document.getElementById('giftVideo');
-    const btn = document.getElementById('soundBtn');
-
+    e.stopPropagation(); // prevent video click issues
     video.muted = !video.muted;
-    btn.textContent = video.muted ? "🔇" : "🔊";
+    soundBtn.textContent = video.muted ? "🔇" : "🔊";
   }
 </script>
 
