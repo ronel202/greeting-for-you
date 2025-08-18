@@ -31,7 +31,7 @@
     font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
     color:#2a2a2a;
     background:#ffd9e1 url("img/bg.png") center/85% no-repeat fixed;
-    position:relative;
+    overflow:hidden;
   }
 
   .stage{
@@ -171,31 +171,37 @@
     .bow{ top:-40%; }
   }
 
-  .moving-text {
-    position: absolute;
-    top: 20px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: #ff3366;
-    animation: moveText 5s linear infinite alternate;
-    white-space: nowrap;
-    pointer-events: none; /* para hindi makasagabal sa click */
-  }
-  @keyframes moveText {
-    from {
-      transform: translateX(100%);
-    }
-    to {
-      transform: translateX(-100%);
-    }
-  }
+  .top-marquee{
+  position: fixed;     /* overlay lang, di sasali sa grid ng body */
+  top: 12px;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  z-index: 9999;
+  pointer-events: none; /* para di hadlang sa click sa gift */
+  text-align: left;     /* hindi kailangan, pero safe */
+}
+
+.top-marquee span{
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 24px;
+  font-weight: 700;
+  color: #ff3366;
+  animation: slide-rl 8s linear infinite; /* right → left, tuloy-tuloy */
+  will-change: transform;
+}
+
+@keyframes slide-rl{
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
 </style>
 </head>
 <body>
-  <div class="moving-text">🎁 Click the gift box 🎁</div>
+  <div class="top-marquee" aria-hidden="true">
+    <span>🎁 Click the gift box 🎁</span>
+  </div>
   <!-- background music -->
   <audio id="bgm" loop>
     <source src="bgm.mp3" type="audio/mpeg">
