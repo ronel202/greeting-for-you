@@ -241,52 +241,6 @@
     }
   </script>
   
-  <div class="stage">
-    <div class="gift" id="giftBox" aria-label="Strawberry gift box" role="button" tabindex="0">
-      <div class="box"></div>
-      <div class="lid"></div>
-      <div class="ribbon-v"></div>
-      <div class="ribbon-h"></div>
-      <div class="bow"></div>
-    </div>
-  </div>
   
-<script>
-  const gift = document.getElementById('giftBox');
-
-  function toggleGift(){
-    const isOpen = gift.classList.toggle('open');
-    if(isOpen){
-      burstConfetti();
-      // optional: remove hint text when opened once
-      const hint = document.querySelector('.hint');
-      if(hint) hint.style.display = 'none';
-    }
-  }
-
-  // Click & keyboard access
-  gift.addEventListener('click', toggleGift);
-  gift.addEventListener('keydown', (e)=>{
-    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleGift(); }
-  });
-
-  // Confetti burst
-  function burstConfetti(){
-    const stage = document.querySelector('.stage');
-    const count = 40;
-    for(let i=0;i<count;i++){
-      const span = document.createElement('span');
-      span.className = 'confetti';
-      // spread across stage width
-      span.style.setProperty('--x', Math.random()*100 + '%');
-      span.style.setProperty('--delay', (Math.random()*0.4)+'s');
-      const hues = [340, 0, 20, 45, 120]; // strawberry pinks + leaf green
-      span.style.setProperty('--hue', hues[(Math.random()*hues.length)|0]);
-      stage.appendChild(span);
-      // cleanup
-      setTimeout(()=> span.remove(), 1800);
-    }
-  }
-</script>
 </body>
 </html>
