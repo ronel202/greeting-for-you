@@ -196,9 +196,32 @@
   <audio id="bgm" autoplay loop muted>
     <source src="bgm.mp3" type="audio/mpeg">
   </audio>
-  
-  <!-- mute/unmute button -->
   <button id="audioToggle">🔊</button>
+  
+  <script>
+    const bgm = document.getElementById('bgm');
+    const toggleBtn = document.getElementById('audioToggle');
+  
+    window.addEventListener('load', () => {
+      bgm.muted = false;  // try unmute agad
+      bgm.play().catch(() => {
+        // fallback if browser blocks autoplay
+        bgm.muted = true;
+        toggleBtn.textContent = '🔇';
+      });
+    });
+  
+    toggleBtn.addEventListener('click', () => {
+      if (bgm.muted) {
+        bgm.muted = false;
+        bgm.play();
+        toggleBtn.textContent = '🔊';
+      } else {
+        bgm.muted = true;
+        toggleBtn.textContent = '🔇';
+      }
+    });
+  </script>
   
   <div class="stage">
     <div class="gift" id="giftBox" aria-label="Strawberry gift box" role="button" tabindex="0">
@@ -210,27 +233,6 @@
     </div>
   </div>
   
-<script>
-  const bgm = document.getElementById('bgm');
-  const toggleBtn = document.getElementById('audioToggle');
-
-  // default: play with sound
-  bgm.volume = 0.5;
-  bgm.play().catch(()=>{}); 
-  toggleBtn.textContent = '🔊';
-
-  // toggle mute/unmute
-  toggleBtn.addEventListener('click', () => {
-    if (bgm.muted) {
-      bgm.muted = false;
-      toggleBtn.textContent = '🔊';
-    } else {
-      bgm.muted = true;
-      toggleBtn.textContent = '🔇';
-    }
-  });
-</script>
-
 <script>
   const gift = document.getElementById('giftBox');
 
