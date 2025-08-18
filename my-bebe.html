@@ -171,11 +171,30 @@
     .bow{ top:-40%; }
   }
 
-  
+  .moving-text {
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #ff3366;
+  animation: moveText 5s linear infinite alternate;
+  white-space: nowrap;
+}
+
+@keyframes moveText {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
 </style>
 </head>
 <body>
-  <!-- background music -->
+  <div class="moving-text">🎁 Click the gift box 🎁</div>
   <!-- background music -->
   <audio id="bgm" loop>
     <source src="bgm.mp3" type="audio/mpeg">
