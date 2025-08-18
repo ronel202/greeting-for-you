@@ -170,10 +170,37 @@
     .lid{ height:30%; top:-28%; }  /* ginawa kong % para sumabay sa scaling */
     .bow{ top:-40%; }
   }
+
+  #audioToggle {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  background: rgba(255,255,255,0.7);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  z-index: 100;
+  transition: background 0.3s;
+}
+#audioToggle:hover {
+  background: rgba(255,255,255,0.9);
+}
+  
 </style>
 </head>
 <body>
-
+  <!-- background music -->
+  <audio id="bgm" loop>
+    <source src="bgm.mp3" type="audio/mpeg">
+  </audio>
+  
+  <!-- mute/unmute button -->
+  <button id="audioToggle" aria-label="Toggle music">🔇</button>
+  
   <div class="stage">
     <div class="gift" id="giftBox" aria-label="Strawberry gift box" role="button" tabindex="0">
       <div class="box"></div>
@@ -183,6 +210,29 @@
       <div class="bow"></div>
     </div>
   </div>
+  
+<script>
+  const bgm = document.getElementById('bgm');
+  const toggleBtn = document.getElementById('audioToggle');
+
+  // start muted (icon = 🔇)
+  bgm.volume = 0.5; // pwede mo baguhin volume
+  bgm.muted = true;
+
+  // auto-play muted (allowed by browser)
+  bgm.play().catch(()=>{ /* ignore autoplay block */ });
+
+  toggleBtn.addEventListener('click', ()=>{
+    if(bgm.muted){
+      bgm.muted = false;
+      bgm.play();
+      toggleBtn.textContent = '🔊';
+    } else {
+      bgm.muted = true;
+      toggleBtn.textContent = '🔇';
+    }
+  });
+</script>
 
 <script>
   const gift = document.getElementById('giftBox');
