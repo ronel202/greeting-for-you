@@ -23,16 +23,20 @@
   }
 
   *{box-sizing:border-box}
-  body{
-    margin:0;
-    min-height:100svh;
-    display:grid;
-    place-items:center;
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-    color:#2a2a2a;
-    background:#ffd9e1 url("img/bg.png") center/85% no-repeat fixed;
-    overflow:hidden;
-  }
+  body {
+  margin: 0;
+  min-height: 100svh;
+  display: flex;                 /* horizontal layout */
+  overflow-x: auto;              /* scroll/swipe left–right */
+  overflow-y: hidden;            /* disable vertical scroll */
+  scroll-snap-type: x mandatory; /* snap per page */
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+  color: #2a2a2a;
+}
+
+body::-webkit-scrollbar { 
+  display: none;                 /* hide scrollbar (optional) */
+}
 
   .stage{
     position:relative;
@@ -218,7 +222,14 @@
   color: #fff;
   text-align: center;
 }
-  
+.page{
+  flex:0 0 100vw;              /* fixed width = 1 viewport */
+  height:100vh;
+  display:grid;
+  place-items:center;
+  background:#ffd9e1 url("img/bg.png") center/85% no-repeat fixed;
+  scroll-snap-align:start;     /* snap sa simula */
+}
 </style>
 </head>
 <body>
