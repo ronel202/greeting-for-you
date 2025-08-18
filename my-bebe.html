@@ -31,7 +31,7 @@
     font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
     color:#2a2a2a;
     background:#ffd9e1 url("img/bg.png") center/85% no-repeat fixed;
-    overflow:hidden;
+    position:relative;
   }
 
   .stage{
@@ -172,25 +172,26 @@
   }
 
   .moving-text {
-  position: absolute;
-  top: 20px;
-  width: 100%;
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  color: #ff3366;
-  animation: moveText 5s linear infinite alternate;
-  white-space: nowrap;
-}
-
-@keyframes moveText {
-  from {
-    transform: translateX(100%);
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff3366;
+    animation: moveText 5s linear infinite alternate;
+    white-space: nowrap;
+    pointer-events: none; /* para hindi makasagabal sa click */
   }
-  to {
-    transform: translateX(-100%);
+  @keyframes moveText {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(-100%);
+    }
   }
-}
 </style>
 </head>
 <body>
