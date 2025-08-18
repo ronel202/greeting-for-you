@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Strawberry Gift Box</title>
+<style>
+  :root{
+    --pink:#ff4d6d;
+    --pink-dark:#e33a5a;
+    --green:#37b24d;
+    --green-dark:#2f9e44;
+    --shadow:0 12px 30px rgba(0,0,0,.20);
+    --svg-strawberry: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>\
+<circle cx='12' cy='13' r='7' fill='%23ff4d6d'/>\
+<path d='M12 4c2 0 3 1 3 3-2-1-4-1-6 0 0-2 1-3 3-3z' fill='%2337b24d'/>\
+<circle cx='10' cy='13' r='1' fill='%23ffd166'/>\
+<circle cx='14' cy='15' r='1' fill='%23ffd166'/>\
+<circle cx='9'  cy='16' r='1' fill='%23ffd166'/>\
+<circle cx='15' cy='12' r='1' fill='%23ffd166'/>\
+</svg>");
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    min-height:100svh;
+    display:grid;
+    place-items:center;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+    color:#2a2a2a;
+    background:#ffd9e1 url("bg.jpg") center/cover no-repeat fixed;
+    overflow:hidden;
+  }
+
+  .stage{
+    position:relative;
+    width:min(420px, 90vw);
+    height:min(420px, 90vw);
+    display:grid;
+    place-items:center;
+    isolation:isolate;
+  }
+
+  /* floating hearts (subtle) */
+  .stage::before{
+    content:"";
+    position:absolute; inset:-10% -10% -10% -10%;
+    background:
+      radial-gradient(closest-side, rgba(255,255,255,.25), transparent 70%) 10% 20%/120px 120px,
+      radial-gradient(closest-side, rgba(255,255,255,.18), transparent 70%) 80% 70%/140px 140px,
+      radial-gradient(closest-side, rgba(255,255,255,.22), transparent 70%) 60% 30%/100px 100px;
+    pointer-events:none;
+    z-index:0;
+    animation: drift 20s linear infinite;
+  }
+  @keyframes drift{
+    0%{transform:translateY(0)}
+    100%{transform:translateY(-40px)}
+  }
+
+  .gift{
+    position:relative;
+    width:200px; height:200px;
+    transform-style:preserve-3d;
+    cursor:pointer;
+    filter:drop-shadow(var(--shadow));
+    z-index:2;
+    animation:bob 2.2s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform: translateY(0) }
+    50%{ transform: translateY(-8px) }
+  }
+
+  /* box body */
+  .box{
+    position:absolute; inset:0;
+    background:
+      var(--svg-strawberry) 0 0/28px 28px repeat,
+      linear-gradient(180deg, var(--pink) 0%, var(--pink-dark) 100%);
+    border-radius:14px;
+  }
+
+  /* lid */
+  .lid{
+    position:absolute;
+    left:0; right:0;
+    height:64px;
+    top:-56px;
+    background:linear-gradient(180deg, #ff7b94 0%, var(--pink) 100%);
+    border-radius:14px 14px 10px 10px;
+    transform-origin:bottom center;
+    transition:transform .7s cubic-bezier(.2,.9,.2,1.1);
+  }
+
+  /* ribbon vertical & horizontal */
+  .ribbon-v, .ribbon-h{
+    position:absolute; background:linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
+  }
+  .ribbon-v{
+    width:20px; height:100%;
+    left:50%; transform:translateX(-50%);
+    border-radius:10px;
+  }
+  .ribbon-h{
+    height:20px; width:100%;
+    top:50%; transform:translateY(-50%);
+    border-radius:10px;
+  }
+
+  /* bow */
+  .bow{
+    position:absolute; top:-72px; left:50%; transform:translateX(-50%);
+    width:96px; height:48px;
+  }
+  .bow::before, .bow::after{
+    content:""; position:absolute; top:0; width:48px; height:48px;
+    background:radial-gradient(circle at 30% 30%, #7ef5a0 0 30%, transparent 31%) top left/100% 100% no-repeat,
+               linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
+    border-radius:0 100% 100% 100% / 0 70% 100% 70%;
+    box-shadow:0 6px 14px rgba(0,0,0,.15) inset;
+  }
+  .bow::before{left:0; transform:rotate(-12deg)}
+  .bow::after{right:0; transform:scaleX(-1) rotate(-12deg)}
+
+  /* open state */
+  .gift.open{ animation:none; }
+  .gift.open .lid{ transform:rotateX(170deg) translateY(-8px) }
+  .gift.open .box{ transform:translateY(8px) }
+
+  /* helper text */
+  .hint{
+    margin-top:14px;
+    font-size:.95rem;
+    color:#2a2a2a;
+    background:rgba(255,255,255,.6);
+    padding:6px 10px;
+    border-radius:999px;
+    backdrop-filter:saturate(140%) blur(6px);
+  }
+
+  /* confetti */
+  .confetti{
+    --x:0; --delay:0s; --hue:340;
+    position:absolute; top:0; left:var(--x);
+    width:8px; height:14px;
+    background:hsl(var(--hue) 90% 60%);
+    border-radius:2px;
+    transform:translateY(-20px) rotate(0deg);
+    animation: drop 1.4s cubic-bezier(.2,.8,.2,1) var(--delay) forwards,
+               spin 1.4s linear var(--delay) forwards;
+    opacity:.95;
+    z-index:1;
+  }
+  @keyframes drop{
+    to{ transform: translateY(100vh) rotate(0deg); opacity:0.9 }
+  }
+  @keyframes spin{
+    to{ transform: translateY(100vh) rotate(540deg) }
+  }
+
+  /* small responsive tweak */
+  @media (max-width:480px){
+    .gift{ width:180px; height:180px }
+    .lid{ height:56px; top:-50px }
+    .bow{ top:-66px }
+  }
+</style>
+</head>
+<body>
+
+  <div class="stage">
+    <div class="gift" id="giftBox" aria-label="Strawberry gift box" role="button" tabindex="0">
+      <div class="box"></div>
+      <div class="lid"></div>
+      <div class="ribbon-v"></div>
+      <div class="ribbon-h"></div>
+      <div class="bow"></div>
+    </div>
+    <div class="hint">click / tap to open 🍓</div>
+  </div>
+
+<script>
+  const gift = document.getElementById('giftBox');
+
+  function toggleGift(){
+    const isOpen = gift.classList.toggle('open');
+    if(isOpen){
+      burstConfetti();
+      // optional: remove hint text when opened once
+      const hint = document.querySelector('.hint');
+      if(hint) hint.style.display = 'none';
+    }
+  }
+
+  // Click & keyboard access
+  gift.addEventListener('click', toggleGift);
+  gift.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleGift(); }
+  });
+
+  // Confetti burst
+  function burstConfetti(){
+    const stage = document.querySelector('.stage');
+    const count = 40;
+    for(let i=0;i<count;i++){
+      const span = document.createElement('span');
+      span.className = 'confetti';
+      // spread across stage width
+      span.style.setProperty('--x', Math.random()*100 + '%');
+      span.style.setProperty('--delay', (Math.random()*0.4)+'s');
+      const hues = [340, 0, 20, 45, 120]; // strawberry pinks + leaf green
+      span.style.setProperty('--hue', hues[(Math.random()*hues.length)|0]);
+      stage.appendChild(span);
+      // cleanup
+      setTimeout(()=> span.remove(), 1800);
+    }
+  }
+</script>
+</body>
+</html>
