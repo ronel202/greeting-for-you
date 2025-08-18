@@ -23,20 +23,12 @@
   }
 
   *{box-sizing:border-box}
-  body {
-  margin: 0;
-  min-height: 100svh;
-  display: flex;                 /* horizontal layout */
-  overflow-x: auto;              /* scroll/swipe left–right */
-  overflow-y: hidden;            /* disable vertical scroll */
-  scroll-snap-type: x mandatory; /* snap per page */
-  font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-  color: #2a2a2a;
-}
-
-body::-webkit-scrollbar { 
-  display: none;                 /* hide scrollbar (optional) */
-}
+  body{ 
+    margin:0; min-height:100svh; 
+    display:grid; place-items:center; 
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; 
+    color:#2a2a2a; background:#ffd9e1 url("img/bg.png") center/85% no-repeat fixed; overflow:hidden; 
+  }
 
   .stage{
     position:relative;
@@ -201,39 +193,10 @@ body::-webkit-scrollbar {
   100% { transform: translateX(-100%); }
 }
 
-.video-page {
-  position: relative;
-  overflow: hidden;
-}
-
-.bg-video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;   /* para hindi ma-distort */
-  z-index: -1;         /* ilagay sa likod ng content */
-}
-
-.video-content {
-  position: relative;
-  z-index: 1;
-  color: #fff;
-  text-align: center;
-}
-.page{
-  flex:0 0 100vw;              /* fixed width = 1 viewport */
-  height:100vh;
-  display:grid;
-  place-items:center;
-  background:#ffd9e1 url("img/bg.png") center/85% no-repeat fixed;
-  scroll-snap-align:start;     /* snap sa simula */
-}
 </style>
 </head>
 <body>
-<div class="page">
+
   <div class="top-marquee" aria-hidden="true">
     <span>🎁 Click the gift box 🎁</span>
   </div>
@@ -249,24 +212,6 @@ body::-webkit-scrollbar {
       <div class="ribbon-v"></div>
       <div class="ribbon-h"></div>
       <div class="bow"></div>
-    </div>
-  </div>
-</div>  
-  <!-- pwede ka magdagdag ng extra horizontal pages dito -->
-  <div class="page" style="background:#cce5ff">
-    <h1>Page 2</h1>
-  </div>
-  <div class="page" style="background:#d4edda">
-    <div class="page video-page">
-      <video autoplay muted loop playsinline class="bg-video">
-        <source src="video.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    
-      <div class="video-content">
-        <h1>Welcome to Page 3</h1>
-        <p>This is a fullscreen background video.</p>
-      </div>
     </div>
   </div>
   
