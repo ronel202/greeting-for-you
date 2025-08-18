@@ -196,6 +196,29 @@
   0%   { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
 }
+
+.video-page {
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* para hindi ma-distort */
+  z-index: -1;         /* ilagay sa likod ng content */
+}
+
+.video-content {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  text-align: center;
+}
+  
 </style>
 </head>
 <body>
