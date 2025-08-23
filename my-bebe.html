@@ -216,56 +216,6 @@
   </div>
   
   <script>
-    const bgm = document.getElementById('bgm');
-    const gift = document.getElementById('giftBox');
-  
-    let isPlaying = false;
-  
-    function toggleGift(){
-      const isOpen = gift.classList.toggle('open');
-      if(isOpen){
-        burstConfetti();
-        const hint = document.querySelector('.hint');
-        if(hint) hint.style.display = 'none';
-      }
-  
-      // music toggle dito
-      if (!isPlaying) {
-        bgm.play().then(() => {
-          isPlaying = true;
-        }).catch(err => {
-          console.log("Autoplay blocked, need user interaction", err);
-        });
-      } else {
-        bgm.pause();
-        isPlaying = false;
-      }
-    }
-  
-    // Click & keyboard access
-    gift.addEventListener('click', toggleGift);
-    gift.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleGift(); }
-    });
-  
-    // Confetti burst (as is)
-    function burstConfetti(){
-      const stage = document.querySelector('.stage');
-      const count = 40;
-      for(let i=0;i<count;i++){
-        const span = document.createElement('span');
-        span.className = 'confetti';
-        span.style.setProperty('--x', Math.random()*100 + '%');
-        span.style.setProperty('--delay', (Math.random()*0.4)+'s');
-        const hues = [340, 0, 20, 45, 120];
-        span.style.setProperty('--hue', hues[(Math.random()*hues.length)|0]);
-        stage.appendChild(span);
-        setTimeout(()=> span.remove(), 1800);
-      }
-    }
-  </script>
-  
-  <script>
   const bgm = document.getElementById('bgm');
   const gift = document.getElementById('giftBox');
   let isPlaying = false;
