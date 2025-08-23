@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Random Suprise</title>
+  <title>Page 2 - Strawberry Button</title>
   <style>
     body {
       margin: 0;
@@ -16,8 +16,8 @@
 
     /* Strawberry Button Base */
     .strawberry {
-      width: 120px;
-      height: 120px;
+      width: 140px;
+      height: 140px;
       background: #ff4d6d;
       border-radius: 50% 50% 45% 55% / 55% 55% 45% 45%; /* strawberry shape */
       position: relative;
@@ -27,6 +27,10 @@
       cursor: pointer;
       transition: transform 0.4s ease, box-shadow 0.4s ease;
       box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px;
     }
 
     /* Leaves on top */
@@ -44,7 +48,7 @@
     }
 
     /* Seeds */
-    .strawberry span {
+    .strawberry span.seed {
       position: absolute;
       width: 6px;
       height: 10px;
@@ -53,11 +57,11 @@
       animation: twinkle 1.5s infinite alternate;
     }
 
-    .strawberry span:nth-child(1){ top:30px; left:40px;}
-    .strawberry span:nth-child(2){ top:50px; left:60px;}
-    .strawberry span:nth-child(3){ top:70px; left:30px;}
-    .strawberry span:nth-child(4){ top:90px; left:70px;}
-    .strawberry span:nth-child(5){ top:60px; left:90px;}
+    .strawberry span.seed:nth-child(1){ top:30px; left:40px;}
+    .strawberry span.seed:nth-child(2){ top:50px; left:60px;}
+    .strawberry span.seed:nth-child(3){ top:70px; left:30px;}
+    .strawberry span.seed:nth-child(4){ top:90px; left:70px;}
+    .strawberry span.seed:nth-child(5){ top:60px; left:90px;}
 
     /* Hover / Active Animation */
     .strawberry:active {
@@ -75,7 +79,9 @@
 
   <!-- Strawberry button -->
   <div class="strawberry" id="strawberryBtn">
-    <span></span><span></span><span></span><span></span><span></span>
+    Shall we<br>proceed?
+    <span class="seed"></span><span class="seed"></span>
+    <span class="seed"></span><span class="seed"></span><span class="seed"></span>
   </div>
 
   <!-- Background Music -->
