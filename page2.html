@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Suprise</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #fff0f5 url("img/bg.png") center/85% no-repeat fixed;
+      font-family: system-ui, sans-serif;
+      overflow: hidden;
+    }
+
+    /* Strawberry Button Base */
+    .strawberry {
+      width: 120px;
+      height: 120px;
+      background: #ff4d6d;
+      border-radius: 50% 50% 45% 55% / 55% 55% 45% 45%; /* strawberry shape */
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Leaves on top */
+    .strawberry::before {
+      content: "";
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 25px solid transparent;
+      border-right: 25px solid transparent;
+      border-bottom: 40px solid #3cb371;
+    }
+
+    /* Seeds */
+    .strawberry span {
+      position: absolute;
+      width: 6px;
+      height: 10px;
+      background: #fffacd;
+      border-radius: 50%;
+      animation: twinkle 1.5s infinite alternate;
+    }
+
+    .strawberry span:nth-child(1){ top:30px; left:40px;}
+    .strawberry span:nth-child(2){ top:50px; left:60px;}
+    .strawberry span:nth-child(3){ top:70px; left:30px;}
+    .strawberry span:nth-child(4){ top:90px; left:70px;}
+    .strawberry span:nth-child(5){ top:60px; left:90px;}
+
+    /* Hover / Active Animation */
+    .strawberry:active {
+      transform: scale(1.2) rotate(10deg);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+    }
+
+    @keyframes twinkle {
+      from { opacity: 1; transform: scale(1); }
+      to   { opacity: 0.6; transform: scale(0.8); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Strawberry button -->
+  <div class="strawberry" id="strawberryBtn">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- Background Music -->
+  <audio id="bgm" loop>
+    <source src="music.mp3" type="audio/mp3">
+  </audio>
+
+  <script>
+    const strawberry = document.getElementById('strawberryBtn');
+    const bgm = document.getElementById('bgm');
+    let isPlaying = false;
+
+    strawberry.addEventListener('click', () => {
+      if (!isPlaying) {
+        bgm.play().then(() => { isPlaying = true; });
+      } else {
+        bgm.pause();
+        isPlaying = false;
+      }
+    });
+  </script>
+
+</body>
+</html>
