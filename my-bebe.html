@@ -265,6 +265,50 @@
     }
   </script>
   
-  
+  <script>
+  const bgm = document.getElementById('bgm');
+  const gift = document.getElementById('giftBox');
+  let isPlaying = false;
+
+  function toggleGift(){
+    const isOpen = gift.classList.toggle('open');
+
+    if(isOpen){
+      burstConfetti();
+    } else {
+      // kapag nag CLOSE, redirect sa susunod na page
+      window.location.href = "page2.html";  // <-- palitan mo ng actual filename ng next page
+    }
+
+    // toggle music
+    if (!isPlaying) {
+      bgm.play().then(() => { isPlaying = true; })
+        .catch(err => console.log("Autoplay blocked", err));
+    } else {
+      bgm.pause();
+      isPlaying = false;
+    }
+  }
+
+  gift.addEventListener('click', toggleGift);
+  gift.addEventListener('keydown', (e)=>{
+    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleGift(); }
+  });
+
+  function burstConfetti(){
+    const stage = document.querySelector('.stage');
+    const count = 40;
+    for(let i=0;i<count;i++){
+      const span = document.createElement('span');
+      span.className = 'confetti';
+      span.style.setProperty('--x', Math.random()*100 + '%');
+      span.style.setProperty('--delay', (Math.random()*0.4)+'s');
+      const hues = [340, 0, 20, 45, 120];
+      span.style.setProperty('--hue', hues[(Math.random()*hues.length)|0]);
+      stage.appendChild(span);
+      setTimeout(()=> span.remove(), 1800);
+    }
+  }
+</script>
 </body>
 </html>
