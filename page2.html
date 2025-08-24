@@ -27,6 +27,7 @@
       transition: transform 0.4s ease, box-shadow 0.4s ease;
       box-shadow: 0 8px 15px rgba(0,0,0,0.2);
       z-index: 2;
+      margin-top: -40px; /* UPDATED: para umakyat yung button */
     }
 
     .strawberry:active {
@@ -36,7 +37,7 @@
 
     .btn-text {
       position: absolute;
-      bottom: -35px;
+      bottom: -20px; /* UPDATED: tinaas mula -35px → -20px */
       font-size: 20px;
       color: #ff4d6d;
       font-weight: bold;
@@ -99,7 +100,7 @@
       left: 50%;
       transform: translateX(-50%);
       font-size: 50px;
-      color: #ff4d6d;
+      color: #ff4d6d; /* UPDATED: kulay kapareho ng strawberry */
       cursor: pointer;
       opacity: 0;
       transition: opacity 0.5s ease, transform 0.5s ease;
@@ -141,6 +142,7 @@
     const bgm = document.getElementById('bgm');
     const nextSection = document.getElementById('nextSection');
     const toggleUp = document.getElementById('toggleUp');
+    let isPlaying = false;
     let intervalId;
 
     const images = [
@@ -151,26 +153,30 @@
       "img/pic5.jpg"
     ];
 
-    // click strawberry = slide + play music + hide homepage buttons
+    // click strawberry = slide + toggle music + hide homepage buttons
     strawberry.addEventListener('click', () => {
       nextSection.classList.add('active');
       strawberry.classList.add('hide');
       homeBtn.classList.add('hide');
 
-      bgm.currentTime = 0; // reset
-      bgm.play();
+      if (!isPlaying) {
+        bgm.play().then(() => { isPlaying = true; });
+      } else {
+        bgm.pause();
+        isPlaying = false;
+      }
 
       showRandomImages();
     });
 
-    // toggle back up = stop music + slide up
+    // toggle back up (slide up, show homepage controls again)
     toggleUp.addEventListener('click', () => {
       nextSection.classList.remove('active');
       strawberry.classList.remove('hide');
       homeBtn.classList.remove('hide');
+      bgm.pause(); // para huminto music kapag close
+      isPlaying = false;
       clearInterval(intervalId); // stop spawning imgs
-      bgm.pause();
-      bgm.currentTime = 0; // reset to start
     });
 
     function showRandomImages() {
