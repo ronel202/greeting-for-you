@@ -12,6 +12,7 @@
       background: #fff0f5 url("img/bg.png") center/85% no-repeat fixed;
       font-family: system-ui, sans-serif;
       overflow: hidden;
+      position: relative;
     }
 
     /* Strawberry Button Base */
@@ -91,34 +92,18 @@
       transform: translateX(-50%) scale(1.3);
     }
 
-    /* Container for slide */
+    /* Slide Section */
     .slide {
-      position: absolute;
+      position: fixed;
       top: 100%;
       left: 0;
       width: 100%;
       height: 100%;
       background: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
+      transition: top 1s ease;
       overflow: hidden;
-      transition: top 0.8s ease;
-      z-index: 1;
     }
-
-    .slide.active {
-      top: 0;
-    }
-
-    /* Random images */
-    .slide img {
-      position: absolute;
-      max-width: 200px;
-      border-radius: 15px;
-      animation: twinkle 2s infinite alternate;
-    }
+    .slide.active { top: 0; }
 
     /* Toggle up button */
     .toggle-up {
@@ -126,36 +111,32 @@
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
-      background: transparent;
+      font-size: 60px;
       color: #ff4d6d;
-      border: none;
-      border-radius: 50%;
-      font-size: 32px;
-      padding: 12px 16px;
       cursor: pointer;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-    .toggle-up:hover {
-      transform: translateX(-50%) scale(1.2);
+      transition: transform 0.3s ease, opacity 0.5s ease;
+      z-index: 5;
       opacity: 0.8;
     }
+    .toggle-up:hover {
+      transform: translateX(-50%) scale(1.3);
+      opacity: 1;
+    }
 
+    /* Random images */
     .random-img {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* para sakto fullscreen */
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
       opacity: 0;
-      animation: fadeInOut 6s ease forwards;
+      animation: appear 6s forwards;
     }
-  
-    @keyframes fadeInOut {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
-      80% { opacity: 1; }
-      100% { opacity: 0; }
+    @keyframes appear {
+      0% { opacity: 0; transform: scale(0.5); }
+      20% { opacity: 1; transform: scale(1); }
+      80% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.5); }
     }
   </style>
 </head>
@@ -172,64 +153,63 @@
     <span class="seed"></span><span class="seed"></span>
   </div>
 
-  <!-- Hidden slide -->
-  <div class="slide" id="slidePage">
-    <div id="randomImages"></div>
-    <button class="toggle-up" id="toggleUp">⬆</button>
-  </div>
-
   <!-- Background Music -->
   <audio id="bgm" loop>
     <source src="NIKI - You'll be in my heart.mp3" type="audio/mp3">
   </audio>
 
+  <!-- Slide Section -->
+  <div class="slide" id="slidePage">
+    <div class="toggle-up" id="toggleUp">🔼</div>
+  </div>
+
   <script>
-  const strawberry = document.getElementById('strawberryBtn');
-  const bgm = document.getElementById('bgm');
-  const page1 = document.querySelector('.page1');
-  const page2 = document.querySelector('.page2');
-  const toggleUp = document.querySelector('.toggle-up');
-  let isPlaying = false;
+    const strawberry = document.getElementById('strawberryBtn');
+    const bgm = document.getElementById('bgm');
+    const slidePage = document.getElementById('slidePage');
+    const toggleUp = document.getElementById('toggleUp');
+    let isPlaying = false;
 
-  const randomImages = [
-    "img/1.jpg",
-    "img/2.jpg",
-    "img/3.jpg",
-    "img/4.jpg",
-    "img/5.jpg"
-  ];
+    const images = [
+      "img/pic1.jpg",
+      "img/pic2.jpg",
+      "img/pic3.jpg",
+      "img/pic4.jpg",
+      "img/pic5.jpg"
+    ];
 
-  strawberry.addEventListener('click', () => {
-    if (!isPlaying) {
-      bgm.play().then(() => { isPlaying = true; });
+    // Strawberry click
+    strawberry.addEventListener('click', () => {
+      slidePage.classList.add('active');
+      if (!isPlaying) {
+        bgm.play().then(() => { isPlaying = true; });
+      }
+      spawnRandomImages();
+    });
+
+    // Toggle up
+    toggleUp.addEventListener('click', () => {
+      slidePage.classList.remove('active');
+      // cleanup para fresh ulit next time
+      const oldImgs = slidePage.querySelectorAll(".random-img");
+      oldImgs.forEach(img => img.remove());
+    });
+
+    // Spawn random images
+    function spawnRandomImages() {
+      for (let i = 0; i < 8; i++) {
+        const img = document.createElement("img");
+        img.src = images[Math.floor(Math.random() * images.length)];
+        img.className = "random-img";
+        img.style.top = Math.random() * 80 + "%";
+        img.style.left = Math.random() * 80 + "%";
+        img.style.animationDelay = (Math.random() * 3) + "s";
+        slidePage.appendChild(img);
+        // auto-remove after animation
+        img.addEventListener("animationend", () => img.remove());
+      }
     }
-
-    // slide to page 2
-    page1.style.transform = "translateY(-100%)";
-    page2.style.transform = "translateY(-100%)";
-
-    // show toggle button
-    toggleUp.style.display = "block";
-
-    // show random images
-    for (let i = 0; i < 3; i++) { // 3 random images bawat slide
-      const img = document.createElement('img');
-      img.src = randomImages[Math.floor(Math.random() * randomImages.length)];
-      img.classList.add('random-img');
-      page2.appendChild(img);
-
-      // auto-remove after animation
-      img.addEventListener('animationend', () => img.remove());
-    }
-  });
-
-  toggleUp.addEventListener('click', () => {
-    page1.style.transform = "translateY(0)";
-    page2.style.transform = "translateY(0)";
-    toggleUp.style.display = "none";
-  });
-</script>
-
+  </script>
 
 </body>
 </html>
