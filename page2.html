@@ -133,14 +133,20 @@
       right: 20px;
       font-size: 50px;
       text-decoration: none;
-      color: #ff4d6d;   /* kulay ng strawberry */
-      transition: transform 0.3s ease, color 0.3s ease;
+      color: #ff4d6d;   /* kulay strawberry */
+      transition: transform 0.3s ease, color 0.3s ease, opacity 0.6s ease;
       z-index: 1000;
       text-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      opacity: 0;              /* nakatago default */
+      pointer-events: none;     /* hindi clickable habang hidden */
+    }
+    .toggle-up.show {
+      opacity: 1;
+      pointer-events: auto;
     }
     .toggle-up:hover {
       transform: scale(1.3);
-      color: #ff1e4d;   /* darker strawberry kapag hover */
+      color: #ff1e4d;  /* darker strawberry kapag hover */
     }
   </style>
 </head>
@@ -213,5 +219,14 @@
 
   <!-- Toggle Up Button -->
   <a href="page2.html" class="toggle-up">⬆️</a>
+  <script>
+    const strawberry = document.getElementById('strawberryBtn');
+    const toggleUp = document.querySelector('.toggle-up');
+    
+    strawberry.addEventListener('click', () => {
+      document.body.classList.add('show-gallery'); 
+      toggleUp.classList.add('show');   // lumabas lang sa second slide
+    });
+  </script>
 </body>
 </html>
