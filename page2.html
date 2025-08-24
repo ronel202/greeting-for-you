@@ -14,11 +14,12 @@
       overflow: hidden;
     }
 
-    /* Strawberry Button (image version) */
+    /* Strawberry Button Base */
     .strawberry {
       width: 160px;
       height: 190px;
-      background: url("img/strawberry.png") center/contain no-repeat;
+      background: #ff4d6d;
+      border-radius: 50% 50% 55% 55% / 45% 45% 65% 65%;
       position: relative;
       display: flex;
       align-items: center;
@@ -26,20 +27,49 @@
       cursor: pointer;
       transition: transform 0.4s ease, box-shadow 0.4s ease;
       box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-      z-index: 2;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      padding: 15px;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    /* Leaves */
+    .strawberry::before {
+      content: "";
+      position: absolute;
+      top: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 35px solid transparent;
+      border-right: 35px solid transparent;
+      border-bottom: 55px solid #3cb371;
+    }
+
+    /* Seeds */
+    .strawberry span.seed {
+      position: absolute;
+      width: 7px;
+      height: 12px;
+      background: #fffacd;
+      border-radius: 50%;
+      animation: twinkle 1.5s infinite alternate;
+    }
+    .strawberry span.seed:nth-child(2){ top:50px; left:50px;}
+    .strawberry span.seed:nth-child(3){ top:80px; left:30px;}
+    .strawberry span.seed:nth-child(4){ top:100px; left:80px;}
+    .strawberry span.seed:nth-child(5){ top:130px; left:100px;}
+    .strawberry span.seed:nth-child(6){ top:110px; left:60px;}
+
+    @keyframes twinkle {
+      from { opacity: 1; transform: scale(1); }
+      to   { opacity: 0.6; transform: scale(0.8); }
     }
 
     .strawberry:active {
       transform: scale(1.2) rotate(10deg);
       box-shadow: 0 12px 25px rgba(0,0,0,0.3);
-    }
-
-    .btn-text {
-      position: absolute;
-      bottom: -35px;
-      font-size: 20px;
-      color: #ff4d6d;
-      font-weight: bold;
     }
 
     /* Home button */
@@ -52,16 +82,15 @@
       color: #ff4d6d;
       text-decoration: none;
       transition: transform 0.3s ease;
-      z-index: 3;
     }
     .home-btn:hover {
       transform: translateX(-50%) scale(1.3);
     }
 
-    /* Next Section (hidden first) */
-    .next-section {
+    /* Sliding panel */
+    .slide-panel {
       position: absolute;
-      top: 100%;
+      top: -100%;
       left: 0;
       width: 100%;
       height: 100%;
@@ -69,60 +98,58 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      transition: top 0.8s ease;
       overflow: hidden;
-      transition: top 1s ease-in-out;
     }
-
-    .next-section.active {
+    .slide-panel.active {
       top: 0;
     }
 
-    /* Random images inside */
-    .random-img {
-      position: absolute;
-      width: 200px;
-      height: auto;
-      opacity: 0;
-      animation: twinkle 2s infinite alternate;
-      transition: opacity 1s, transform 1s;
-    }
-
-    @keyframes twinkle {
-      from { opacity: 1; transform: scale(1); }
-      to   { opacity: 0.6; transform: scale(0.8); }
-    }
-
-    /* Toggle up button */
+    /* Toggle Up button */
     .toggle-up {
       position: absolute;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 50px;
-      color: #ff4d6d;
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
       cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      z-index: 3;
+      transition: transform 0.3s ease, background 0.3s ease;
     }
-    .next-section.active .toggle-up {
-      opacity: 1;
+    .toggle-up:hover {
+      transform: translateX(-50%) scale(1.2);
+      background: #e63b59;
     }
 
-    /* Hide homepage controls inside black screen */
-    .hide {
-      display: none;
+    /* Random images */
+    .random-img {
+      position: absolute;
+      max-width: 180px;
+      animation: twinkle 1.5s infinite alternate;
     }
   </style>
 </head>
 <body>
 
   <!-- Home button -->
-  <a href="my-bebe.html" class="home-btn" id="homeBtn">🏠</a>
+  <a href="my-bebe.html" class="home-btn">🏠</a>
 
   <!-- Strawberry button -->
   <div class="strawberry" id="strawberryBtn">
-    <div class="btn-text">Click Me</div>
+    <div class="btn-text">Shall we<br>proceed?</div>
+    <span class="seed"></span><span class="seed"></span>
+    <span class="seed"></span><span class="seed"></span>
+    <span class="seed"></span><span class="seed"></span>
+  </div>
+
+  <!-- Slide Panel -->
+  <div class="slide-panel" id="slidePanel">
+    <button class="toggle-up" id="toggleUp">⬆</button>
   </div>
 
   <!-- Background Music -->
@@ -130,66 +157,50 @@
     <source src="NIKI - You'll be in my heart.mp3" type="audio/mp3">
   </audio>
 
-  <!-- Next Section -->
-  <div class="next-section" id="nextSection">
-    <div class="toggle-up" id="toggleUp">⬆️</div>
-  </div>
-
   <script>
     const strawberry = document.getElementById('strawberryBtn');
-    const homeBtn = document.getElementById('homeBtn');
     const bgm = document.getElementById('bgm');
-    const nextSection = document.getElementById('nextSection');
+    const panel = document.getElementById('slidePanel');
     const toggleUp = document.getElementById('toggleUp');
     let isPlaying = false;
-    let intervalId;
 
+    // Random image pool
     const images = [
-      "img/pic1.jpg",
-      "img/pic2.jpg",
-      "img/pic3.jpg",
-      "img/pic4.jpg",
-      "img/pic5.jpg"
+      "img/1.jpg",
+      "img/2.jpg",
+      "img/3.jpg",
+      "img/4.jpg",
+      "img/5.jpg"
     ];
 
-    // click strawberry = slide + toggle music + hide homepage buttons
-    strawberry.addEventListener('click', () => {
-      nextSection.classList.add('active');
-      strawberry.classList.add('hide');
-      homeBtn.classList.add('hide');
+    // Function to spawn random images
+    function spawnRandomImage() {
+      const img = document.createElement('img');
+      img.src = images[Math.floor(Math.random() * images.length)];
+      img.className = "random-img";
+      img.style.top = Math.random() * (window.innerHeight - 200) + "px";
+      img.style.left = Math.random() * (window.innerWidth - 200) + "px";
+      document.getElementById('slidePanel').appendChild(img);
+      setTimeout(() => img.remove(), 4000);
+    }
 
-      if (!isPlaying) {
-        bgm.play().then(() => { isPlaying = true; });
-      } else {
+    // Strawberry click
+    strawberry.addEventListener('click', () => {
+      panel.classList.add('active');
+      bgm.currentTime = 0;
+      bgm.play();
+      isPlaying = true;
+      setInterval(spawnRandomImage, 2000);
+    });
+
+    // Toggle Up click
+    toggleUp.addEventListener('click', () => {
+      panel.classList.remove('active');
+      if (isPlaying) {
         bgm.pause();
         isPlaying = false;
       }
-
-      showRandomImages();
     });
-
-    // toggle back up (slide up, show homepage controls again)
-    toggleUp.addEventListener('click', () => {
-      nextSection.classList.remove('active');
-      strawberry.classList.remove('hide');
-      homeBtn.classList.remove('hide');
-      clearInterval(intervalId); // stop spawning imgs
-    });
-
-    function showRandomImages() {
-      intervalId = setInterval(() => {
-        const img = document.createElement("img");
-        img.src = images[Math.floor(Math.random() * images.length)];
-        img.className = "random-img";
-        img.style.top = Math.random() * 80 + "%";
-        img.style.left = Math.random() * 80 + "%";
-        img.style.transform = `rotate(${Math.random()*360}deg) scale(${0.5 + Math.random()*1.5})`;
-        nextSection.appendChild(img);
-
-        setTimeout(() => { img.style.opacity = 1; }, 100);
-        setTimeout(() => { img.style.opacity = 0; img.remove(); }, 4000);
-      }, 1500);
-    }
   </script>
 </body>
 </html>
