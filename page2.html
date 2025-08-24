@@ -11,30 +11,22 @@
       overflow: hidden;
     }
 
-    .container {
-      height: 200vh; /* dalawang screen height (page1 + page2) */
-      transition: transform 1s ease;
+    /* Sections */
+    section {
+      width: 100%;
+      height: 100vh;
+      scroll-snap-align: start;
     }
 
-    .page {
-      height: 100vh;
+    /* Strawberry Section */
+    .home-section {
       display: grid;
       place-items: center;
+      background: #fff0f5 url("img/bg.png") center/85% no-repeat fixed;
       position: relative;
     }
 
-    /* PAGE 1 BACKGROUND */
-    .page1 {
-      background: #fff0f5 url("img/bg.png") center/85% no-repeat fixed;
-    }
-
-    /* PAGE 2 BACKGROUND */
-    .page2 {
-      background: black;
-      overflow: hidden;
-    }
-
-    /* Strawberry Button Base */
+    /* Strawberry Button */
     .strawberry {
       width: 160px;
       height: 190px;
@@ -53,10 +45,7 @@
       padding: 15px;
       font-size: 18px;
       line-height: 1.2;
-      z-index: 2;
     }
-
-    /* Leaves on top */
     .strawberry::before {
       content: "";
       position: absolute;
@@ -69,8 +58,6 @@
       border-right: 35px solid transparent;
       border-bottom: 55px solid #3cb371;
     }
-
-    /* Seeds */
     .strawberry span.seed {
       position: absolute;
       width: 7px;
@@ -84,13 +71,10 @@
     .strawberry span.seed:nth-child(4){ top:100px; left:80px;}
     .strawberry span.seed:nth-child(5){ top:130px; left:100px;}
     .strawberry span.seed:nth-child(6){ top:110px; left:60px;}
-
-    /* Hover / Active Animation */
     .strawberry:active {
       transform: scale(1.2) rotate(10deg);
       box-shadow: 0 12px 25px rgba(0,0,0,0.3);
     }
-
     @keyframes twinkle {
       from { opacity: 1; transform: scale(1); }
       to   { opacity: 0.6; transform: scale(0.8); }
@@ -106,49 +90,88 @@
       color: #ff4d6d;
       text-decoration: none;
       transition: transform 0.3s ease;
-      z-index: 3;
     }
     .home-btn:hover {
       transform: translateX(-50%) scale(1.3);
     }
 
-    /* Random Images sa Page 2 */
-    .random-img {
-      position: absolute;
-      max-width: 300px;
-      opacity: 0;
-      animation: fadeInOut 5s linear infinite;
+    /* Gallery Section */
+    .gallery-section {
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      position: relative;
+      scroll-snap-align: start;
+    }
+    .gallery-section img {
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 15px;
+      animation: fadeIn 1s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to   { opacity: 1; transform: scale(1); }
     }
 
-    @keyframes fadeInOut {
-      0% { opacity: 0; transform: scale(0.8); }
-      20% { opacity: 1; transform: scale(1); }
-      80% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(0.8); }
+    /* Toggle Up Button (only in gallery section) */
+    .toggle-up {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #ff4d6d;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease, transform 0.3s ease;
+    }
+    .gallery-section .toggle-up {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .toggle-up:hover {
+      transform: scale(1.2);
+    }
+
+    /* Smooth scroll container */
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
     }
   </style>
 </head>
 <body>
 
-  <div class="container" id="container">
-    <!-- Home button (lagi visible) -->
+  <!-- Home Section -->
+  <section class="home-section" id="home">
     <a href="my-bebe.html" class="home-btn">🏠</a>
-
-    <!-- Page 1 -->
-    <div class="page page1">
-      <div class="strawberry" id="strawberryBtn">
-        <div class="btn-text">Shall we<br>proceed?</div>
-        <span class="seed"></span><span class="seed"></span>
-        <span class="seed"></span><span class="seed"></span>
-        <span class="seed"></span><span class="seed"></span>
-      </div>
+    <div class="strawberry" id="strawberryBtn">
+      <div class="btn-text">Shall we<br>proceed?</div>
+      <span class="seed"></span><span class="seed"></span>
+      <span class="seed"></span><span class="seed"></span>
+      <span class="seed"></span><span class="seed"></span>
     </div>
+  </section>
 
-    <!-- Page 2 -->
-    <div class="page page2" id="page2">
-      <!-- dito lalabas random images -->
-    </div>
-  </div>
+  <!-- Gallery Section -->
+  <section class="gallery-section" id="gallery">
+    <button class="toggle-up" onclick="document.getElementById('home').scrollIntoView()">⬆</button>
+    <img src="img/pic1.jpg" alt="pic1">
+    <img src="img/pic2.jpg" alt="pic2">
+    <img src="img/pic3.jpg" alt="pic3">
+    <img src="img/pic4.jpg" alt="pic4">
+    <img src="img/pic5.jpg" alt="pic5">
+  </section>
 
   <!-- Background Music -->
   <audio id="bgm" loop>
@@ -158,42 +181,19 @@
   <script>
     const strawberry = document.getElementById('strawberryBtn');
     const bgm = document.getElementById('bgm');
-    const container = document.getElementById('container');
-    const page2 = document.getElementById('page2');
     let isPlaying = false;
 
-    const images = [
-      "img/pic1.jpg",
-      "img/pic2.jpg",
-      "img/pic3.jpg",
-      "img/pic4.jpg"
-    ];
-
     strawberry.addEventListener('click', () => {
-      // Play / pause music
+      // play/pause music
       if (!isPlaying) {
         bgm.play().then(() => { isPlaying = true; });
       } else {
         bgm.pause();
         isPlaying = false;
       }
-
-      // Slide down to page 2
-      container.style.transform = "translateY(-100vh)";
-
-      // Show random images
-      page2.innerHTML = "";
-      for (let i = 0; i < 5; i++) {
-        const img = document.createElement("img");
-        img.src = images[Math.floor(Math.random() * images.length)];
-        img.classList.add("random-img");
-        img.style.top = Math.random() * 80 + "%";
-        img.style.left = Math.random() * 80 + "%";
-        img.style.animationDelay = (Math.random() * 5) + "s";
-        page2.appendChild(img);
-      }
+      // slide down to gallery
+      document.getElementById('gallery').scrollIntoView();
     });
   </script>
-
 </body>
 </html>
