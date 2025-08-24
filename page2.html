@@ -95,7 +95,7 @@
       10%, 90% { opacity: 1; }
     }
 
-    /* Toggle Up Button */
+    /* Toggle Up Button (Page2 only) */
     .toggle-up {
       position: fixed;
       bottom: 20px;
@@ -131,6 +131,7 @@
 
     <!-- Page 2 -->
     <div class="page page2" id="page2">
+      <!-- Toggle-up nandito lang, hindi sa homepage -->
       <a href="page2.html" class="toggle-up" id="toggleUp">⬆️</a>
     </div>
   </div>
@@ -147,7 +148,6 @@
     const bgm = document.getElementById('bgm');
     const toggleUp = document.getElementById('toggleUp');
 
-    // Image list (palitan mo paths ng pics mo)
     const images = [
       "img/pic1.jpg",
       "img/pic2.jpg",
@@ -155,9 +155,11 @@
       "img/pic4.jpg",
     ];
 
-    // Shuffle and display images
     function displayRandomImages() {
-      page2.innerHTML = '<a href="page2.html" class="toggle-up" id="toggleUp">⬆️</a>';
+      // Clear old images (pero iiwan si toggle-up)
+      [...page2.querySelectorAll("img")].forEach(img => img.remove());
+
+      // Shuffle + insert
       images.sort(() => Math.random() - 0.5).forEach((src, index) => {
         const img = document.createElement("img");
         img.src = src;
@@ -167,20 +169,20 @@
     }
 
     strawberry.addEventListener('click', () => {
-      // Slide to Page2
+      // Slide effect
       page1.style.transform = "translateY(-100%)";
       page2.style.transform = "translateY(-100%)";
 
-      // Play Music
+      // Play music
       bgm.play();
 
       // Show images
       setTimeout(displayRandomImages, 800);
 
-      // Show toggle-up
+      // Show toggle-up button
       setTimeout(() => {
-        document.getElementById('toggleUp').classList.add('show');
-      }, 1000);
+        toggleUp.classList.add('show');
+      }, 1200);
     });
   </script>
 </body>
