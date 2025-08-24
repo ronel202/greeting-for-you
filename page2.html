@@ -7,26 +7,15 @@
     body {
       margin: 0;
       height: 100vh;
-      font-family: system-ui, sans-serif;
-      overflow: hidden;
-    }
-
-    /* Sections */
-    section {
-      width: 100%;
-      height: 100vh;
-      scroll-snap-align: start;
-    }
-
-    /* Strawberry Section */
-    .home-section {
       display: grid;
       place-items: center;
       background: #fff0f5 url("img/bg.png") center/85% no-repeat fixed;
+      font-family: system-ui, sans-serif;
+      overflow: hidden;
       position: relative;
     }
 
-    /* Strawberry Button */
+    /* Strawberry Button Base */
     .strawberry {
       width: 160px;
       height: 190px;
@@ -45,7 +34,10 @@
       padding: 15px;
       font-size: 18px;
       line-height: 1.2;
+      z-index: 2;
     }
+
+    /* Leaves on top */
     .strawberry::before {
       content: "";
       position: absolute;
@@ -58,6 +50,8 @@
       border-right: 35px solid transparent;
       border-bottom: 55px solid #3cb371;
     }
+
+    /* Seeds */
     .strawberry span.seed {
       position: absolute;
       width: 7px;
@@ -66,15 +60,19 @@
       border-radius: 50%;
       animation: twinkle 1.5s infinite alternate;
     }
+
     .strawberry span.seed:nth-child(2){ top:50px; left:50px;}
     .strawberry span.seed:nth-child(3){ top:80px; left:30px;}
     .strawberry span.seed:nth-child(4){ top:100px; left:80px;}
     .strawberry span.seed:nth-child(5){ top:130px; left:100px;}
     .strawberry span.seed:nth-child(6){ top:110px; left:60px;}
+
+    /* Hover / Active Animation */
     .strawberry:active {
       transform: scale(1.2) rotate(10deg);
       box-shadow: 0 12px 25px rgba(0,0,0,0.3);
     }
+
     @keyframes twinkle {
       from { opacity: 1; transform: scale(1); }
       to   { opacity: 0.6; transform: scale(0.8); }
@@ -90,110 +88,130 @@
       color: #ff4d6d;
       text-decoration: none;
       transition: transform 0.3s ease;
+      z-index: 3;
     }
     .home-btn:hover {
       transform: translateX(-50%) scale(1.3);
     }
 
-    /* Gallery Section */
-    .gallery-section {
-      background: #111;
+    /* Slide Section */
+    .slide {
+      position: fixed;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      transition: top 1s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      position: relative;
-      scroll-snap-align: start;
+      overflow: hidden;
     }
-    .gallery-section img {
-      width: 250px;
-      height: 250px;
-      object-fit: cover;
-      border-radius: 15px;
-      animation: fadeIn 1s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.8); }
-      to   { opacity: 1; transform: scale(1); }
+    .slide.active {
+      top: 0;
     }
 
-    /* Toggle Up Button (only in gallery section) */
+    /* Toggle up button */
     .toggle-up {
       position: absolute;
-      top: 20px;
-      right: 20px;
-      background: #ff4d6d;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      font-size: 28px;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 60px;
+      color: #ff4d6d;
       cursor: pointer;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s ease, transform 0.3s ease;
-    }
-    .gallery-section .toggle-up {
-      opacity: 1;
-      pointer-events: auto;
+      transition: transform 0.3s ease, opacity 0.5s ease;
+      z-index: 5;
+      opacity: 0.8;
     }
     .toggle-up:hover {
-      transform: scale(1.2);
+      transform: translateX(-50%) scale(1.3);
+      opacity: 1;
     }
 
-    /* Smooth scroll container */
-    html {
-      scroll-behavior: smooth;
-      scroll-snap-type: y mandatory;
+    /* Random images */
+    .random-img {
+      position: absolute;
+      max-width: 200px;
+      max-height: 200px;
+      opacity: 0;
+      animation: appear 5s infinite;
+    }
+
+    @keyframes appear {
+      0% { opacity: 0; transform: scale(0.5); }
+      20% { opacity: 1; transform: scale(1); }
+      80% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.5); }
     }
   </style>
 </head>
 <body>
 
-  <!-- Home Section -->
-  <section class="home-section" id="home">
-    <a href="my-bebe.html" class="home-btn">🏠</a>
-    <div class="strawberry" id="strawberryBtn">
-      <div class="btn-text">Shall we<br>proceed?</div>
-      <span class="seed"></span><span class="seed"></span>
-      <span class="seed"></span><span class="seed"></span>
-      <span class="seed"></span><span class="seed"></span>
-    </div>
-  </section>
+  <!-- Home button -->
+  <a href="my-bebe.html" class="home-btn">🏠</a>
 
-  <!-- Gallery Section -->
-  <section class="gallery-section" id="gallery">
-    <button class="toggle-up" onclick="document.getElementById('home').scrollIntoView()">⬆</button>
-    <img src="img/pic1.jpg" alt="pic1">
-    <img src="img/pic2.jpg" alt="pic2">
-    <img src="img/pic3.jpg" alt="pic3">
-    <img src="img/pic4.jpg" alt="pic4">
-    <img src="img/pic5.jpg" alt="pic5">
-  </section>
+  <!-- Strawberry button -->
+  <div class="strawberry" id="strawberryBtn">
+    <div class="btn-text">Shall we<br>proceed?</div>
+    <span class="seed"></span><span class="seed"></span>
+    <span class="seed"></span><span class="seed"></span>
+    <span class="seed"></span><span class="seed"></span>
+  </div>
 
   <!-- Background Music -->
   <audio id="bgm" loop>
     <source src="NIKI - You'll be in my heart.mp3" type="audio/mp3">
   </audio>
 
+  <!-- Slide Section -->
+  <div class="slide" id="slidePage">
+    <div class="toggle-up" id="toggleUp">🔼</div>
+  </div>
+
   <script>
     const strawberry = document.getElementById('strawberryBtn');
     const bgm = document.getElementById('bgm');
+    const slidePage = document.getElementById('slidePage');
+    const toggleUp = document.getElementById('toggleUp');
     let isPlaying = false;
 
+    // Strawberry click = play music + slide down
     strawberry.addEventListener('click', () => {
-      // play/pause music
+      slidePage.classList.add('active');
       if (!isPlaying) {
         bgm.play().then(() => { isPlaying = true; });
-      } else {
-        bgm.pause();
-        isPlaying = false;
       }
-      // slide down to gallery
-      document.getElementById('gallery').scrollIntoView();
+      spawnRandomImages();
     });
+
+    // Toggle up = balik sa taas
+    toggleUp.addEventListener('click', () => {
+      slidePage.classList.remove('active');
+    });
+
+    // Random images
+    const images = [
+      "img/pic1.jpg",
+      "img/pic2.jpg",
+      "img/pic3.jpg",
+      "img/pic4.jpg",
+      "img/pic5.jpg"
+    ];
+
+    function spawnRandomImages() {
+      for (let i = 0; i < 10; i++) {
+        const img = document.createElement("img");
+        img.src = images[Math.floor(Math.random() * images.length)];
+        img.className = "random-img";
+        img.style.top = Math.random() * 80 + "%";
+        img.style.left = Math.random() * 80 + "%";
+        img.style.animationDelay = (Math.random() * 5) + "s";
+        slidePage.appendChild(img);
+      }
+    }
   </script>
+
 </body>
 </html>
