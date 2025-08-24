@@ -184,40 +184,52 @@
   </audio>
 
   <script>
-    const strawberry = document.getElementById('strawberryBtn');
-    const slide = document.getElementById('slidePage');
-    const bgm = document.getElementById('bgm');
-    const randomImagesContainer = document.getElementById('randomImages');
-    const toggleUp = document.getElementById('toggleUp');
+  const strawberry = document.getElementById('strawberryBtn');
+  const bgm = document.getElementById('bgm');
+  const page1 = document.querySelector('.page1');
+  const page2 = document.querySelector('.page2');
+  const toggleUp = document.querySelector('.toggle-up');
+  let isPlaying = false;
 
-    let isPlaying = false;
+  const randomImages = [
+    "img/1.jpg",
+    "img/2.jpg",
+    "img/3.jpg",
+    "img/4.jpg",
+    "img/5.jpg"
+  ];
 
-    // Random image list (lagay mo yung filenames dito)
-    const images = ["img/pic1.jpg","img/pic2.jpg","img/pic3.jpg","img/pic4.jpg","img/pic5.jpg"];
-
-    function showRandomImages() {
-      randomImagesContainer.innerHTML = ""; // clear muna
-      for (let i = 0; i < images.length; i++) {
-        const img = document.createElement("img");
-        img.src = "img/" + images[Math.floor(Math.random() * images.length)];
-        img.style.top = Math.random() * 80 + "%";
-        img.style.left = Math.random() * 80 + "%";
-        randomImagesContainer.appendChild(img);
-      }
+  strawberry.addEventListener('click', () => {
+    if (!isPlaying) {
+      bgm.play().then(() => { isPlaying = true; });
     }
 
-    strawberry.addEventListener('click', () => {
-      if (!isPlaying) {
-        bgm.play().then(() => { isPlaying = true; });
-      }
-      showRandomImages();
-      slide.classList.add('active');
-    });
+    // slide to page 2
+    page1.style.transform = "translateY(-100%)";
+    page2.style.transform = "translateY(-100%)";
 
-    toggleUp.addEventListener('click', () => {
-      slide.classList.remove('active');
-    });
-  </script>
+    // show toggle button
+    toggleUp.style.display = "block";
+
+    // show random images
+    for (let i = 0; i < 3; i++) { // 3 random images bawat slide
+      const img = document.createElement('img');
+      img.src = randomImages[Math.floor(Math.random() * randomImages.length)];
+      img.classList.add('random-img');
+      page2.appendChild(img);
+
+      // auto-remove after animation
+      img.addEventListener('animationend', () => img.remove());
+    }
+  });
+
+  toggleUp.addEventListener('click', () => {
+    page1.style.transform = "translateY(0)";
+    page2.style.transform = "translateY(0)";
+    toggleUp.style.display = "none";
+  });
+</script>
+
 
 </body>
 </html>
