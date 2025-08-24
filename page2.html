@@ -141,7 +141,6 @@
     const bgm = document.getElementById('bgm');
     const nextSection = document.getElementById('nextSection');
     const toggleUp = document.getElementById('toggleUp');
-    let isPlaying = false;
     let intervalId;
 
     const images = [
@@ -152,28 +151,26 @@
       "img/pic5.jpg"
     ];
 
-    // click strawberry = slide + toggle music + hide homepage buttons
+    // click strawberry = slide + play music + hide homepage buttons
     strawberry.addEventListener('click', () => {
       nextSection.classList.add('active');
       strawberry.classList.add('hide');
       homeBtn.classList.add('hide');
 
-      if (!isPlaying) {
-        bgm.play().then(() => { isPlaying = true; });
-      } else {
-        bgm.pause();
-        isPlaying = false;
-      }
+      bgm.currentTime = 0; // reset
+      bgm.play();
 
       showRandomImages();
     });
 
-    // toggle back up (slide up, show homepage controls again)
+    // toggle back up = stop music + slide up
     toggleUp.addEventListener('click', () => {
       nextSection.classList.remove('active');
       strawberry.classList.remove('hide');
       homeBtn.classList.remove('hide');
       clearInterval(intervalId); // stop spawning imgs
+      bgm.pause();
+      bgm.currentTime = 0; // reset to start
     });
 
     function showRandomImages() {
