@@ -12,7 +12,6 @@
       background: #fff0f5 url("img/bg.png") center/85% no-repeat fixed;
       font-family: system-ui, sans-serif;
       overflow: hidden;
-      position: relative;
     }
 
     /* Strawberry Button Base */
@@ -60,14 +59,12 @@
       border-radius: 50%;
       animation: twinkle 1.5s infinite alternate;
     }
-
     .strawberry span.seed:nth-child(2){ top:50px; left:50px;}
     .strawberry span.seed:nth-child(3){ top:80px; left:30px;}
     .strawberry span.seed:nth-child(4){ top:100px; left:80px;}
     .strawberry span.seed:nth-child(5){ top:130px; left:100px;}
     .strawberry span.seed:nth-child(6){ top:110px; left:60px;}
 
-    /* Hover / Active Animation */
     .strawberry:active {
       transform: scale(1.2) rotate(10deg);
       box-shadow: 0 12px 25px rgba(0,0,0,0.3);
@@ -94,22 +91,33 @@
       transform: translateX(-50%) scale(1.3);
     }
 
-    /* Slide Section */
+    /* Container for slide */
     .slide {
-      position: fixed;
+      position: absolute;
       top: 100%;
       left: 0;
       width: 100%;
       height: 100%;
       background: black;
-      transition: top 1s ease;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
       overflow: hidden;
+      transition: top 0.8s ease;
+      z-index: 1;
     }
+
     .slide.active {
       top: 0;
+    }
+
+    /* Random images */
+    .slide img {
+      position: absolute;
+      max-width: 200px;
+      border-radius: 15px;
+      animation: twinkle 2s infinite alternate;
     }
 
     /* Toggle up button */
@@ -118,32 +126,18 @@
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 60px;
-      color: #ff4d6d;
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 32px;
+      padding: 12px 16px;
       cursor: pointer;
-      transition: transform 0.3s ease, opacity 0.5s ease;
-      z-index: 5;
-      opacity: 0.8;
+      transition: transform 0.3s ease, opacity 0.3s ease;
     }
     .toggle-up:hover {
-      transform: translateX(-50%) scale(1.3);
-      opacity: 1;
-    }
-
-    /* Random images */
-    .random-img {
-      position: absolute;
-      max-width: 200px;
-      max-height: 200px;
-      opacity: 0;
-      animation: appear 5s infinite;
-    }
-
-    @keyframes appear {
-      0% { opacity: 0; transform: scale(0.5); }
-      20% { opacity: 1; transform: scale(1); }
-      80% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(0.5); }
+      transform: translateX(-50%) scale(1.2);
+      opacity: 0.8;
     }
   </style>
 </head>
@@ -154,10 +148,16 @@
 
   <!-- Strawberry button -->
   <div class="strawberry" id="strawberryBtn">
-    <div class="btn-text">Click Me</div>
+    <div class="btn-text">Shall we<br>proceed?</div>
     <span class="seed"></span><span class="seed"></span>
     <span class="seed"></span><span class="seed"></span>
     <span class="seed"></span><span class="seed"></span>
+  </div>
+
+  <!-- Hidden slide -->
+  <div class="slide" id="slidePage">
+    <div id="randomImages"></div>
+    <button class="toggle-up" id="toggleUp">⬆</button>
   </div>
 
   <!-- Background Music -->
@@ -165,52 +165,40 @@
     <source src="NIKI - You'll be in my heart.mp3" type="audio/mp3">
   </audio>
 
-  <!-- Slide Section -->
-  <div class="slide" id="slidePage">
-    <div class="toggle-up" id="toggleUp">🔼</div>
-  </div>
-
   <script>
     const strawberry = document.getElementById('strawberryBtn');
+    const slide = document.getElementById('slidePage');
     const bgm = document.getElementById('bgm');
-    const slidePage = document.getElementById('slidePage');
+    const randomImagesContainer = document.getElementById('randomImages');
     const toggleUp = document.getElementById('toggleUp');
+
     let isPlaying = false;
 
-    // Strawberry click = play music + slide down
+    // Random image list (lagay mo yung filenames dito)
+    const images = ["1.jpg","2.jpg","3.jpg","4.jpg","5.jpg"];
+
+    function showRandomImages() {
+      randomImagesContainer.innerHTML = ""; // clear muna
+      for (let i = 0; i < images.length; i++) {
+        const img = document.createElement("img");
+        img.src = "img/" + images[Math.floor(Math.random() * images.length)];
+        img.style.top = Math.random() * 80 + "%";
+        img.style.left = Math.random() * 80 + "%";
+        randomImagesContainer.appendChild(img);
+      }
+    }
+
     strawberry.addEventListener('click', () => {
-      slidePage.classList.add('active');
       if (!isPlaying) {
         bgm.play().then(() => { isPlaying = true; });
       }
-      spawnRandomImages();
+      showRandomImages();
+      slide.classList.add('active');
     });
 
-    // Toggle up = balik sa taas
     toggleUp.addEventListener('click', () => {
-      slidePage.classList.remove('active');
+      slide.classList.remove('active');
     });
-
-    // Random images
-    const images = [
-      "img/pic1.jpg",
-      "img/pic2.jpg",
-      "img/pic3.jpg",
-      "img/pic4.jpg",
-      "img/pic5.jpg"
-    ];
-
-    function spawnRandomImages() {
-      for (let i = 0; i < 10; i++) {
-        const img = document.createElement("img");
-        img.src = images[Math.floor(Math.random() * images.length)];
-        img.className = "random-img";
-        img.style.top = Math.random() * 80 + "%";
-        img.style.left = Math.random() * 80 + "%";
-        img.style.animationDelay = (Math.random() * 5) + "s";
-        slidePage.appendChild(img);
-      }
-    }
   </script>
 
 </body>
