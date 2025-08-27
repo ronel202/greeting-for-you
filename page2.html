@@ -19,12 +19,14 @@
       width: 160px;
       height: 190px;
       background: url("img/strawberry.png") center/contain no-repeat;
-      position: absolute;  /* ← fixed sa page */
-      top: 250px;          /* distansya mula taas */
-      left: 50px;          /* distansya mula kaliwa */
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
       transition: transform 0.4s ease, box-shadow 0.4s ease;
       box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+      z-index: 2;
     }
 
     .strawberry:active {
