@@ -4,14 +4,27 @@
   <meta charset="UTF-8">
   <title>Greet Section</title>
   <style>
+    :root {
+      --bg-img: url("img/bg.png");
+    }
+
     body {
       margin: 0;
-      height: 100vh;
+      min-height: 100svh;
       display: grid;
       place-items: center;
-      background: #fff0f5 url("img/bg.png") center/85% no-repeat fixed;
       font-family: system-ui, sans-serif;
       overflow: hidden;
+      position: relative;
+      background: #ffd9e1;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: var(--bg-img) center/85% no-repeat;
+      z-index: -1;
     }
 
     /* Strawberry Button (image version) */
