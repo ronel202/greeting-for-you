@@ -16,7 +16,6 @@
       align-items: center;
     }
 
-    /* ✅ Wrapper handles the background */
     .wrapper {
       position: fixed;
       inset: 0;
@@ -35,6 +34,12 @@
       z-index: 1;
     }
 
+    /* BOUNCE animation */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
     /* Strawberry Button */
     .strawberry {
       width: 160px;
@@ -48,6 +53,7 @@
       transition: transform 0.4s ease, box-shadow 0.4s ease;
       box-shadow: 0 8px 15px rgba(0,0,0,0.2);
       z-index: 2;
+      animation: bounce 2s infinite;
     }
     .strawberry:active {
       transform: scale(1.2) rotate(10deg);
@@ -59,6 +65,7 @@
       font-size: 20px;
       color: #ff4d6d;
       font-weight: bold;
+      animation: bounce 2s infinite;
     }
 
     /* Home button */
@@ -130,17 +137,32 @@
     /* Toggle up button */
     .toggle-up {
       position: absolute;
-      bottom: 20px;
+      bottom: 50px;
       left: 50%;
       transform: translateX(-50%);
       font-size: 50px;
-      color: pink; /* 🎀 ginawa mong pink */
+      color: pink;
       cursor: pointer;
       opacity: 0;
-      transition: opacity 0.8s ease, transform 0.5s ease;
+      transition: opacity 0.8s ease;
       z-index: 3;
+      animation: bounce 2s infinite;
     }
-    .toggle-up.show { opacity: 1; } /* lalabas lang pag tapos na typing */
+    .toggle-up.show { opacity: 1; }
+
+    /* Shall we proceed text (kasama sa toggle-up) */
+    .proceed-text {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      color: pink;
+      font-weight: bold;
+      opacity: 0;
+      animation: bounce 2s infinite;
+    }
+    .toggle-up.show + .proceed-text { opacity: 1; }
 
     .hide { display: none; }
 
@@ -162,7 +184,7 @@
   <div class="content">
     <!-- Strawberry button -->
     <div class="strawberry" id="strawberryBtn">
-      <div class="btn-text">Click Me</div>
+      <div class="btn-text">Shall we proceed?</div>
     </div>
 
     <audio id="bgm" loop>
@@ -172,6 +194,7 @@
     <div class="next-section" id="nextSection">
       <div class="typing-container" id="typingText"></div>
       <div class="toggle-up" id="toggleUp">⬆️</div>
+      <div class="proceed-text">Shall we proceed?</div>
     </div>
 
     <div class="video-section" id="videoSection">
@@ -272,8 +295,7 @@
             setTimeout(typeNextChar, 500);
           }
         } else {
-          // 🎀 Lalabas lang yung ⬆️ pagkatapos matapos lahat
-          toggleUp.classList.add('show');
+          toggleUp.classList.add('show'); // lalabas lang pag tapos lahat
         }
       }
       typeNextChar();
