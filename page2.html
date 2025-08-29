@@ -71,6 +71,7 @@
       align-items: center;
       overflow: hidden;
       transition: top 1s ease-in-out;
+      flex-direction: column;
     }
 
     .next-section.active {
@@ -113,6 +114,18 @@
     .hide {
       display: none;
     }
+
+    /* Typing text */
+    .typing-container {
+      color: white;
+      font-size: 28px;
+      text-align: center;
+      white-space: pre-line;
+      line-height: 1.6;
+      max-width: 80%;
+      margin: auto;
+      font-family: "Courier New", monospace;
+    }
   </style>
 </head>
 <body>
@@ -132,6 +145,7 @@
 
   <!-- Next Section -->
   <div class="next-section" id="nextSection">
+    <div class="typing-container" id="typingText"></div>
     <div class="toggle-up" id="toggleUp">⬆️</div>
   </div>
 
@@ -141,6 +155,7 @@
     const bgm = document.getElementById('bgm');
     const nextSection = document.getElementById('nextSection');
     const toggleUp = document.getElementById('toggleUp');
+    const typingText = document.getElementById('typingText');
     let intervalId;
 
     const images = [
@@ -149,6 +164,23 @@
       "img/pic3.jpg",
       "img/pic4.jpg",
       "img/pic5.jpg"
+    ];
+
+    const sentences = [
+      "Hi bebe",
+      "Happy birthday",
+      "Hindi ko na papahabain",
+      "Next year legal age na ikaw",
+      "I'm happy na nagiimprove ka",
+      "Don't ever think negative too much",
+      "If you need some rest then rest",
+      "Don't stress and pressure yourself too much too",
+      "You always did your best and",
+      "I'm proud of it",
+      "Again, I'm always here for you no matter what",
+      "I will support and comfort you",
+      "Still the same treatment",
+      "Love ya sm🥰"
     ];
 
     // click strawberry = slide + play music + hide homepage buttons
@@ -161,6 +193,7 @@
       bgm.play();
 
       showRandomImages();
+      startTyping();
     });
 
     // toggle back up = stop music + slide up
@@ -169,6 +202,7 @@
       strawberry.classList.remove('hide');
       homeBtn.classList.remove('hide');
       clearInterval(intervalId); // stop spawning imgs
+      typingText.textContent = ""; // clear text
       bgm.pause();
       bgm.currentTime = 0; // reset to start
     });
@@ -186,6 +220,28 @@
         setTimeout(() => { img.style.opacity = 1; }, 100);
         setTimeout(() => { img.style.opacity = 0; img.remove(); }, 4000);
       }, 1500);
+    }
+
+    function startTyping() {
+      typingText.textContent = "";
+      let sentenceIndex = 0;
+      let charIndex = 0;
+
+      function typeNextChar() {
+        if (sentenceIndex < sentences.length) {
+          if (charIndex < sentences[sentenceIndex].length) {
+            typingText.textContent += sentences[sentenceIndex][charIndex];
+            charIndex++;
+            setTimeout(typeNextChar, 120); // typing speed per char
+          } else {
+            typingText.textContent += "\n"; // new line after sentence
+            sentenceIndex++;
+            charIndex = 0;
+            setTimeout(typeNextChar, 500); // delay before next line
+          }
+        }
+      }
+      typeNextChar();
     }
   </script>
 </body>
