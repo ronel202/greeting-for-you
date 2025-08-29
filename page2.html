@@ -2,87 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Greet Section</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page 2</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       margin: 0;
-      height: 100vh;
-      font-family: system-ui, sans-serif;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      color: #2a2a2a;
+      background: #ffd9e1 url("img/bg.png") center/85% no-repeat fixed;
       overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 
-    /* ✅ Wrapper handles the background */
-    .wrapper {
-      position: fixed;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      background: #fff0f5 url("img/bg.png") center/contain no-repeat;
-      z-index: -1;
-    }
-
-    /* Main content container */
-    .content {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: grid;
-      place-items: center;
-      z-index: 1;
-    }
-
-    /* Strawberry Button (image version) */
-    .strawberry {
-      width: 160px;
-      height: 190px;
-      background: url("img/strawberry.png") center/contain no-repeat;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* Strawberry button */
+    .strawberry-btn {
+      background: none;
+      border: none;
       cursor: pointer;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-      z-index: 2;
-    }
-
-    .strawberry:active {
-      transform: scale(1.2) rotate(10deg);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.3);
-    }
-
-    .btn-text {
+      animation: bounce 2s infinite;
       position: absolute;
-      bottom: -35px;
-      font-size: 20px;
-      color: #ff4d6d;
-      font-weight: bold;
+      top: 15%;
     }
 
-    /* Home button */
-    .home-btn {
-      position: absolute;
-      top: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 100px;
-      color: #ff4d6d;
-      text-decoration: none;
+    .strawberry-btn img {
+      width: 120px;
+      height: auto;
       transition: transform 0.3s ease;
-      z-index: 5;
-    }
-    .home-btn:hover {
-      transform: translateX(-50%) scale(1.3);
     }
 
-    /* Next Section (hidden first) */
-    .next-section {
+    .strawberry-btn:hover img {
+      transform: scale(1.1);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Click Me text */
+    .click-text {
       position: absolute;
+      top: 28%;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #d6336c;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* Slide container */
+    .slide {
+      position: fixed;
       top: 100%;
       left: 0;
       width: 100%;
@@ -91,213 +66,153 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
-      transition: top 1s ease-in-out;
       flex-direction: column;
-    }
-    .next-section.active { top: 0; }
-
-    /* Video Section */
-    .video-section {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       transition: top 1s ease-in-out;
       overflow: hidden;
     }
-    .video-section.active { top: 0; }
-
-    .video-section video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* ✅ para fullscreen same sa desktop at mobile */
+    .slide.active {
+      top: 0;
     }
 
-    /* Random images inside */
+    /* Random images */
     .random-img {
       position: absolute;
-      width: 200px;
-      height: auto;
+      max-width: 200px;
       opacity: 0;
-      animation: twinkle 2s infinite alternate;
-      transition: opacity 1s, transform 1s;
-    }
-    @keyframes twinkle {
-      from { opacity: 1; transform: scale(1); }
-      to   { opacity: 0.6; transform: scale(0.8); }
+      animation: twinkle 3s infinite;
     }
 
-    /* Toggle up button */
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Typing text */
+    .typing-text {
+      color: white;
+      font-size: 1.8rem;
+      font-weight: bold;
+      text-align: center;
+      margin: 20px;
+      max-width: 80%;
+    }
+
+    /* Toggle Up Button */
     .toggle-up {
       position: absolute;
       bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 50px;
-      color: #ff4d6d;
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      z-index: 3;
-    }
-    .next-section.active .toggle-up { opacity: 1; }
-
-    /* Hide homepage controls inside black screen */
-    .hide { display: none; }
-
-    /* Typing text */
-    .typing-container {
+      padding: 12px 20px;
+      background-color: #d6336c; /* kulay strawberry */
       color: white;
-      font-size: 28px;
-      text-align: center;
-      white-space: pre-line;
-      line-height: 1.6;
-      max-width: 80%;
-      margin: auto;
-      font-family: "Courier New", monospace;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: none; /* default hidden */
+      transition: all 0.3s ease;
+    }
+    .toggle-up:hover {
+      background-color: #b52a58;
     }
   </style>
 </head>
 <body>
 
-  <!-- ✅ Wrapper para sa BG -->
-  <div class="wrapper"></div>
+  <!-- Strawberry Button -->
+  <button class="strawberry-btn" id="strawberryBtn">
+    <img src="img/strawberry.png" alt="Strawberry">
+  </button>
+  <div class="click-text">Shall we proceed?</div>
 
-  <!-- Main content -->
-  <div class="content">
+  <!-- Background Music -->
+  <audio id="bgm" src="music.mp3"></audio>
 
-    <!-- Strawberry button -->
-    <div class="strawberry" id="strawberryBtn">
-      <div class="btn-text">Click Me</div>
-    </div>
-
-    <!-- Background Music -->
-    <audio id="bgm" loop>
-      <source src="NIKI - You'll be in my heart.mp3" type="audio/mp3">
-    </audio>
-
-    <!-- Next Section -->
-    <div class="next-section" id="nextSection">
-      <div class="typing-container" id="typingText"></div>
-      <div class="toggle-up" id="toggleUp">⬆️</div>
-    </div>
-
-    <!-- Video Section -->
-    <div class="video-section" id="videoSection">
-      <!-- ✅ Home button nilipat dito -->
-      <a href="my-bebe.html" class="home-btn" id="homeBtn">🏠</a>
-      <video id="video" src="video.mp4"></video>
-    </div>
+  <!-- Slide -->
+  <div class="slide" id="slidePage">
+    <div class="typing-text" id="typingText"></div>
+    <button class="toggle-up" id="toggleUp">▲ Back</button>
   </div>
 
   <script>
-    const strawberry = document.getElementById('strawberryBtn');
-    const homeBtn = document.getElementById('homeBtn');
-    const bgm = document.getElementById('bgm');
-    const nextSection = document.getElementById('nextSection');
-    const toggleUp = document.getElementById('toggleUp');
-    const typingText = document.getElementById('typingText');
-    const videoSection = document.getElementById('videoSection');
-    const video = document.getElementById('video');
-    let intervalId;
+    const strawberryBtn = document.getElementById("strawberryBtn");
+    const clickText = document.querySelector(".click-text");
+    const slidePage = document.getElementById("slidePage");
+    const bgm = document.getElementById("bgm");
+    const toggleUp = document.getElementById("toggleUp");
+    const typingText = document.getElementById("typingText");
 
-    const images = ["img/pic1.jpg","img/pic2.jpg","img/pic3.jpg","img/pic4.jpg","img/pic5.jpg"];
+    let isPlaying = false;
+
+    // Typing animation setup
     const sentences = [
-      "Before you read this,",
-      "Ensure to not cry ok?😉",
-      "Hindi ko na papahabain pa sasabihin ko^^",
-      "Kasi it's your birthday,",
-      "Ayokong maging emotional ka,",
-      "Happy 17th birthday🎉",
-      "Since ayun na nga,",
-      "You don't want me to buy something for you,",
-      "I made this as a gift,",
-      "I already told you kung anong worth mo, always",
-      "Reminding you that I'm here if you don't have someone else",
-      "Na matatakbuhan,",
-      "Even tho I'm far enough, yet",
-      "You always do your best and I'm happy for that,",
-      "Tapos bebe don't overthink too much",
-      "Kasi it's bad for you, ",
-      "I will not stop comforting you for that,",
-      "To help you grow and explore,",
-      "So ayun lang kasi pag kinocomfort naman kita nasasabi ko na lahat",
-      "Basta bebe it's up to you sa lahat",
-      "Ng decision mo because you need to,",
-      "Para masanay ka sa decision making mo,",
-      "I'm not controlling or stopping your actions,",
-      "You know I'm just guiding you",
-      "It's up to you, kasi next yr legal age kana",
-      "So ayun lang, wag na masyado magisip ng kung ano.",
-      "Love ya🫶"
+      "This is the first line...",
+      "Here comes the second line...",
+      "And the final message!"
     ];
+    let sentenceIndex = 0;
+    let charIndex = 0;
+    let typingSpeed = 120;
 
-    // click strawberry = slide + play music
-    strawberry.addEventListener('click', () => {
-      nextSection.classList.add('active');
-      strawberry.classList.add('hide');
+    function typeSentence() {
+      if (sentenceIndex < sentences.length) {
+        if (charIndex < sentences[sentenceIndex].length) {
+          typingText.textContent += sentences[sentenceIndex].charAt(charIndex);
+          charIndex++;
+          setTimeout(typeSentence, typingSpeed);
+        } else {
+          typingText.innerHTML += "<br>";
+          charIndex = 0;
+          sentenceIndex++;
+          setTimeout(typeSentence, 500);
+        }
+      } else {
+        // DONE typing, show toggle button
+        toggleUp.style.display = "block";
+      }
+    }
 
-      bgm.currentTime = 0;
-      bgm.play();
+    // Random Images
+    const images = ["img/1.jpg", "img/2.jpg", "img/3.jpg", "img/4.jpg", "img/5.jpg"];
 
-      showRandomImages();
-      startTyping();
+    function createRandomImage() {
+      const img = document.createElement("img");
+      img.src = images[Math.floor(Math.random() * images.length)];
+      img.className = "random-img";
+      img.style.top = Math.random() * 80 + "%";
+      img.style.left = Math.random() * 80 + "%";
+      img.style.width = Math.random() * 150 + 80 + "px";
+      slidePage.appendChild(img);
+
+      setTimeout(() => { img.remove(); }, 4000);
+    }
+
+    setInterval(() => {
+      if (slidePage.classList.contains("active")) {
+        createRandomImage();
+      }
+    }, 1200);
+
+    // Strawberry Button click
+    strawberryBtn.addEventListener("click", () => {
+      slidePage.classList.add("active");
+      typingText.textContent = "";
+      sentenceIndex = 0;
+      charIndex = 0;
+      typeSentence();
+
+      if (!isPlaying) {
+        bgm.play();
+        isPlaying = true;
+      }
     });
 
-    // toggle = close nextSection + open video
-    toggleUp.addEventListener('click', () => {
-      nextSection.classList.remove('active');
-      clearInterval(intervalId);
-      typingText.textContent = "";
+    // Toggle Up click
+    toggleUp.addEventListener("click", () => {
+      slidePage.classList.remove("active");
       bgm.pause();
       bgm.currentTime = 0;
-
-      // show video section
-      videoSection.classList.add('active');
-      video.currentTime = 0;
-      video.play();
+      isPlaying = false;
     });
-
-    function showRandomImages() {
-      intervalId = setInterval(() => {
-        const img = document.createElement("img");
-        img.src = images[Math.floor(Math.random() * images.length)];
-        img.className = "random-img";
-        img.style.top = Math.random() * 80 + "%";
-        img.style.left = Math.random() * 80 + "%";
-        img.style.transform = `rotate(${Math.random()*360}deg) scale(${0.5 + Math.random()*1.5})`;
-        nextSection.appendChild(img);
-
-        setTimeout(() => { img.style.opacity = 1; }, 100);
-        setTimeout(() => { img.style.opacity = 0; img.remove(); }, 4000);
-      }, 1500);
-    }
-
-    function startTyping() {
-      typingText.textContent = "";
-      let sentenceIndex = 0, charIndex = 0;
-      function typeNextChar() {
-        if (sentenceIndex < sentences.length) {
-          if (charIndex < sentences[sentenceIndex].length) {
-            typingText.textContent += sentences[sentenceIndex][charIndex];
-            charIndex++;
-            setTimeout(typeNextChar, 250);
-          } else {
-            typingText.textContent += "\n";
-            sentenceIndex++;
-            charIndex = 0;
-            setTimeout(typeNextChar, 500);
-          }
-        }
-      }
-      typeNextChar();
-    }
   </script>
 </body>
 </html>
