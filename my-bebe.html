@@ -12,39 +12,27 @@
       --green-dark:#2f9e44;
       --shadow:0 12px 30px rgba(0,0,0,.20);
       --svg-strawberry: url("data:image/svg+xml;utf8,\
-        <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>\
-        <circle cx='12' cy='13' r='7' fill='%23ff4d6d'/>\
-        <path d='M12 4c2 0 3 1 3 3-2-1-4-1-6 0 0-2 1-3 3-3z' fill='%2337b24d'/>\
-        <circle cx='10' cy='13' r='1' fill='%23ffd166'/>\
-        <circle cx='14' cy='15' r='1' fill='%23ffd166'/>\
-        <circle cx='9' cy='16' r='1' fill='%23ffd166'/>\
-        <circle cx='15' cy='12' r='1' fill='%23ffd166'/>\
-        </svg>");
+      <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>\
+      <circle cx='12' cy='13' r='7' fill='%23ff4d6d'/>\
+      <path d='M12 4c2 0 3 1 3 3-2-1-4-1-6 0 0-2 1-3 3-3z' fill='%2337b24d'/>\
+      <circle cx='10' cy='13' r='1' fill='%23ffd166'/>\
+      <circle cx='14' cy='15' r='1' fill='%23ffd166'/>\
+      <circle cx='9' cy='16' r='1' fill='%23ffd166'/>\
+      <circle cx='15' cy='12' r='1' fill='%23ffd166'/>\
+      </svg>");
     }
     *{box-sizing:border-box}
-
-    body {
-    margin: 0;
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
-    color: #2a2a2a;
-    background: #000 url("img/bg.png") center center no-repeat;
-    background-size: contain; /* para hindi macrop ang image */
-    background-attachment: fixed; /* optional kung gusto static */
-  }
-
-    /* fullscreen bg wrapper */
-    .bg-wrapper {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-    }
-    .bg-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* lagi fullscreen cover */
+    body{
+      margin:0;
+      min-height:100svh;
+      display:grid;
+      place-items:center;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      color:#2a2a2a;
+      background:#ffd9e1 url("img/bg.png") center center no-repeat;
+      background-size: contain;  /* laging buo ang bg */
+      background-attachment: fixed;
+      overflow:hidden;
     }
 
     .stage{
@@ -61,24 +49,20 @@
       content:"";
       position:absolute;
       inset:-10% -10% -10% -10%;
-      background:
-        radial-gradient(closest-side, rgba(255,255,255,.25), transparent 70%) 10% 20%/120px 120px,
-        radial-gradient(closest-side, rgba(255,255,255,.18), transparent 70%) 80% 70%/140px 140px,
-        radial-gradient(closest-side, rgba(255,255,255,.22), transparent 70%) 60% 30%/100px 100px;
+      background: radial-gradient(closest-side, rgba(255,255,255,.25), transparent 70%) 10% 20%/120px 120px,
+                  radial-gradient(closest-side, rgba(255,255,255,.18), transparent 70%) 80% 70%/140px 140px,
+                  radial-gradient(closest-side, rgba(255,255,255,.22), transparent 70%) 60% 30%/100px 100px;
       pointer-events:none;
       z-index:0;
       animation: drift 20s linear infinite;
     }
-    @keyframes drift{
-      0%{transform:translateY(0)}
-      100%{transform:translateY(-40px)}
-    }
+    @keyframes drift{0%{transform:translateY(0)}100%{transform:translateY(-40px)}}
 
     .gift{
       position:relative;
       width:35vw;
       height:35vw;
-      max-width:150px; /* para hindi sobrang laki sa desktop */
+      max-width:150px;
       max-height:150px;
       transform-style:preserve-3d;
       cursor:pointer;
@@ -86,25 +70,19 @@
       z-index:2;
       animation:bob 2.2s ease-in-out infinite;
     }
-    @keyframes bob{
-      0%,100%{ transform: translateY(0) }
-      50%{ transform: translateY(-8px) }
-    }
+    @keyframes bob{0%,100%{transform: translateY(0)}50%{transform: translateY(-8px)}}
 
     /* box body */
     .box{
       position:absolute;
       inset:0;
-      background: var(--svg-strawberry) 0 0/28px 28px repeat,
-                  linear-gradient(180deg, var(--pink) 0%, var(--pink-dark) 100%);
+      background: var(--svg-strawberry) 0 0/28px 28px repeat, linear-gradient(180deg, var(--pink) 0%, var(--pink-dark) 100%);
       border-radius:14px;
     }
-
     /* lid */
     .lid{
       position:absolute;
-      left:0;
-      right:0;
+      left:0; right:0;
       height:64px;
       top:-56px;
       background:linear-gradient(180deg, #ff7b94 0%, var(--pink) 100%);
@@ -118,20 +96,8 @@
       position:absolute;
       background:linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
     }
-    .ribbon-v{
-      width:20px;
-      height:100%;
-      left:50%;
-      transform:translateX(-50%);
-      border-radius:10px;
-    }
-    .ribbon-h{
-      height:20px;
-      width:100%;
-      top:50%;
-      transform:translateY(-50%);
-      border-radius:10px;
-    }
+    .ribbon-v{width:20px; height:100%; left:50%; transform:translateX(-50%); border-radius:10px;}
+    .ribbon-h{height:20px; width:100%; top:50%; transform:translateY(-50%); border-radius:10px;}
 
     /* bow */
     .bow{
@@ -146,11 +112,9 @@
       content:"";
       position:absolute;
       top:0;
-      width:48px;
-      height:48px;
-      background:
-        radial-gradient(circle at 30% 30%, #7ef5a0 0 30%, transparent 31%) top left/100% 100% no-repeat,
-        linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
+      width:48px; height:48px;
+      background:radial-gradient(circle at 30% 30%, #7ef5a0 0 30%, transparent 31%) top left/100% 100% no-repeat,
+                 linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
       border-radius:0 100% 100% 100% / 0 70% 100% 70%;
       box-shadow:0 6px 14px rgba(0,0,0,.15) inset;
     }
@@ -158,9 +122,9 @@
     .bow::after{right:0; transform:scaleX(-1) rotate(-12deg)}
 
     /* open state */
-    .gift.open{ animation:none; }
-    .gift.open .lid{ transform:rotateX(170deg) translateY(-8px) }
-    .gift.open .box{ transform:translateY(8px) }
+    .gift.open{animation:none;}
+    .gift.open .lid{transform:rotateX(170deg) translateY(-8px)}
+    .gift.open .box{transform:translateY(8px)}
 
     /* helper text */
     .hint{
@@ -175,12 +139,13 @@
 
     /* confetti */
     .confetti{
-      --x:0; --delay:0s; --hue:340;
+      --x:0;
+      --delay:0s;
+      --hue:340;
       position:absolute;
       top:0;
       left:var(--x);
-      width:8px;
-      height:14px;
+      width:8px; height:14px;
       background:hsl(var(--hue) 90% 60%);
       border-radius:2px;
       transform:translateY(-20px) rotate(0deg);
@@ -189,30 +154,29 @@
       opacity:.95;
       z-index:1;
     }
-    @keyframes drop{ to{ transform: translateY(100vh) rotate(0deg); opacity:0.9 } }
-    @keyframes spin{ to{ transform: translateY(100vh) rotate(540deg) } }
+    @keyframes drop{to{transform: translateY(100vh) rotate(0deg); opacity:0.9}}
+    @keyframes spin{to{transform: translateY(100vh) rotate(540deg)}}
 
     /* small responsive tweak */
     @media (max-width:480px){
-      .gift{ width:28vw; height:28vw; }
-      .lid{ height:30%; top:-28%; }
-      .bow{ top:-40%; }
+      .gift{width:28vw; height:28vw;}
+      .lid{height:30%; top:-28%;}
+      .bow{top:-40%;}
     }
 
+    /* ✅ marquee container fix */
     .top-marquee{
       position: fixed;
-      top: 12px;
-      left: 0;
-      right: 0;
+      top: 12px; left: 0; right: 0;
       overflow: hidden;
       z-index: 9999;
       pointer-events: none;
-      text-align: left;
+      text-align: center;
     }
     .top-marquee span{
       display: inline-block;
       white-space: nowrap;
-      font-size: 24px;
+      font-size: clamp(16px, 2vw, 24px); /* responsive font size */
       font-weight: 700;
       color: #ff3366;
       animation: slide-rl 8s linear infinite;
@@ -225,11 +189,7 @@
   </style>
 </head>
 <body>
-  <!-- background wrapper -->
-  <div class="bg-wrapper">
-    <img src="img/bg.png" alt="Background">
-  </div>
-
+  <!-- Top marquee -->
   <div class="top-marquee" aria-hidden="true">
     <span>🎁 Click the gift box 🎁</span>
   </div>
@@ -260,7 +220,7 @@
         burstConfetti();
       } else {
         // kapag nag CLOSE, redirect sa susunod na page
-        window.location.href = "page2.html"; // palitan mo ng actual filename
+        window.location.href = "page2.html"; // <-- palitan ng actual filename
       }
 
       // toggle music
