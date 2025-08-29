@@ -232,7 +232,7 @@
           if (charIndex < sentences[sentenceIndex].length) {
             typingText.textContent += sentences[sentenceIndex][charIndex];
             charIndex++;
-            setTimeout(typeNextChar, 200); // typing speed per char
+            setTimeout(typeNextChar, 250); // typing speed per char
           } else {
             typingText.textContent += "\n"; // new line after sentence
             sentenceIndex++;
